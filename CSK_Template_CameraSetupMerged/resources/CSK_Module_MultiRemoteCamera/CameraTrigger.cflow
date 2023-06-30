@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<glue>
+  <info>
+    <usage>cflow</usage>
+  </info>
+
+
+  <blocks id="Main">
+    <block type="Consumer" name="set-11937" function="Connector.DigitalOut.set(newState)" createParameters="S4DO1" x="157" y="1355" height="140" width="70" path="Connector.DigitalOut.set" blocksEditorX="890" blocksEditorY="157" docked="true" userLabel="">
+      <parameters>
+        <param name="Logic">
+          <val>ACTIVE_HIGH</val>
+        </param>
+        <param name="PortOutputMode">
+          <val>PUSH_PULL</val>
+        </param>
+        <param name="ActivationMode">
+          <val>TIME_MS</val>
+        </param>
+        <param name="ActivationValue">
+          <val>200</val>
+        </param>
+      </parameters>
+    </block>
+    <block type="Consumer" name="set-31091" function="Connector.DigitalOut.set(newState)" createParameters="S6DO1" x="234" y="1355" height="140" width="70" path="Connector.DigitalOut.set" blocksEditorX="890" blocksEditorY="234" docked="true" userLabel="">
+      <parameters>
+        <param name="Logic">
+          <val>ACTIVE_HIGH</val>
+        </param>
+        <param name="PortOutputMode">
+          <val>PUSH_PULL</val>
+        </param>
+        <param name="ActivationMode">
+          <val>TIME_MS</val>
+        </param>
+        <param name="ActivationValue">
+          <val>200</val>
+        </param>
+      </parameters>
+    </block>
+    <block type="Provider" name="OnChange-59879" event="Connector.DigitalIn.OnChange(newState)" createParameters="S4DI1" x="157" y="7" height="140" width="70" path="Connector.DigitalIn.OnChange" blocksEditorX="5" blocksEditorY="157" docked="true" userLabel="">
+      <parameters>
+        <param name="Logic">
+          <val>ACTIVE_HIGH</val>
+        </param>
+        <param name="DebounceMode">
+          <val>TIME_MS</val>
+        </param>
+        <param name="DebounceValue">
+          <val>10</val>
+        </param>
+      </parameters>
+    </block>
+    <block type="Function" name="delay-Camera1" function="delayedSignal=DigitalLogic.Delay.delay(signal)" x="200" y="624" height="140" width="70" path="DigitalLogic.Delay.delay" blocksEditorX="410" blocksEditorY="200" docked="false" userLabel="delayCam1">
+      <parameters>
+        <param name="DelayTime">
+          <val>0</val>
+        </param>
+      </parameters>
+    </block>
+    <block type="Function" name="delay-Camera2" function="delayedSignal=DigitalLogic.Delay.delay(signal)" x="336" y="601" height="140" width="70" path="DigitalLogic.Delay.delay" blocksEditorX="395" blocksEditorY="336" docked="false" userLabel="delayCam2">
+      <parameters>
+        <param name="DelayTime">
+          <val>0</val>
+        </param>
+      </parameters>
+    </block>
+
+  </blocks>
+  <connections>
+    <link from="OnChange-59879:newState" to="delay-Camera1:signal" balanceFactor="0.5"/>
+    <link from="delay-Camera1:delayedSignal" to="set-11937:newState" balanceFactor="0.5"/>
+    <link from="OnChange-59879:newState" to="delay-Camera2:signal" balanceFactor="0.5"/>
+    <link from="delay-Camera2:delayedSignal" to="set-31091:newState" balanceFactor="0.5"/>
+
+  </connections>
+</glue>

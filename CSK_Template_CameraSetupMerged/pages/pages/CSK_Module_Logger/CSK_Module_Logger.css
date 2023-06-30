@@ -1,0 +1,14 @@
+.myMargin20px0_CSK_Module_Logger {
+  margin: 20px 0;
+}
+
+.myMinHeightpx_CSK_Module_Logger {
+  min-height: 20px;
+}
+
+.myCustomFrame_CSK_Module_Logger {
+  border-style: solid;
+  border-width: 1px;
+  border-color: grey;
+  margin: 6px;
+}

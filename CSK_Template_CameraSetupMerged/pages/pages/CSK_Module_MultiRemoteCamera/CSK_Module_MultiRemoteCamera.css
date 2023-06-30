@@ -1,0 +1,41 @@
+.myCustomMaxHeight500px_CSK_Module_MultiRemoteCamera {
+  max-height: 500px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: grey;
+  margin: 6px;
+}
+
+.myCustomFrame_CSK_Module_MultiRemoteCamera {
+  border-style: solid;
+  border-width: 1px;
+  border-color: grey;
+  margin: 6px;
+}
+
+.myCustomSpacerVert10_CSK_Module_MultiRemoteCamera {
+  min-height: 10px;
+}
+
+.myCustomCircle_CSK_Module_MultiRemoteCamera {
+  margin-top: -47px;
+  z-index: 0;
+  margin-left: 20px;
+  min-height: 50px;
+  max-width: 30px;
+}
+
+.myViewer_CSK_Module_MultiRemoteCamera > div > div {
+  max-height: 800px;
+  min-height: 800px;
+}
+
+.myCustomSlider_CSK_Module_MultiRemoteCamera {
+  width: 100%;
+  min-width: none;
+  max-width: none;
+}
+
+.myCustomMaxWidth1600px_CSK_Module_MultiRemoteCamera {
+  max-width: 1600px;
+}

@@ -1,0 +1,1118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<manifest>
+    <application name="CSK_Template_CameraSetupMerged">
+        <crown name="CSK_Template_CameraSetupMerged">
+            <desc>This is an automatically generated CROWN (description not necessary).</desc>
+        </crown>
+        <crown name="CSK_PowerManager">
+            <desc>Module to manage PowerPort configurations. +
+This module provides a UI for all relevant features. +
+{empty} + 
+Typically the feature of this module is used like this: +
+{empty} + 
+1) If needed, check for current status of interface, e.g. via getCurrentPortStatus('S2'). +
+{empty} + 
+2) If status needs to be changed, change it e.g. via changeStatusOfPort('S2'). +
+{empty} + 
+3) Optionally do this for other interfaces. +
+{empty} + 
+4) Activate all configs by calling once setAllStatus().</desc>
+            <serves>
+                <event name="OnNewInterfaceList">
+                    <desc>Notify list of available interfaces.</desc>
+                    <param desc="List of interfaces." multiplicity="1" name="interfaceList" type="string"/>
+                </event>
+                <event name="OnPersistentDataModuleAvailable">
+                    <desc>Notify status if features of CSK_PersistentData module are available.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnNewStatusLoadParameterOnReboot">
+                    <desc>Notify status if parameters should be loaded on app/device boot up.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnDataLoadedOnReboot">
+                    <desc>Event to call if module tried to load parameters and should be ready.</desc>
+                </event>
+                <event name="OnNewStatusModuleIsActive">
+                    <desc>Notify if module can be used on device.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnUserLevelOperatorActive">
+                    <desc>Status of Operator userlevel. Used internally in combination with the CSK_UserManagement module if available.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnUserLevelMaintenanceActive">
+                    <desc>Status of Maintenance userlevel. Used internally in combination with the CSK_UserManagement module if available.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnUserLevelServiceActive">
+                    <desc>Status of Service userlevel. Used internally in combination with the CSK_UserManagement module if available.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnUserLevelAdminActive">
+                    <desc>Status of Admin userlevel. Used internally in combination with the CSK_UserManagement module if available.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnNewParameterName">
+                    <desc>Notify name of persistent data parameter.</desc>
+                    <param desc="Parameter name" multiplicity="1" name="name" type="string"/>
+                </event>
+                <function name="pageCalled">
+                    <desc>Function to register "OnResume" of the module UI (only as helper function).</desc>
+                    <return desc="Empty string (only needed to simplify binding)." multiplicity="1" name="emptyString" type="string"/>
+                </function>
+                <function name="selectInterface">
+                    <desc>Select interface (via table in UI) to configure.</desc>
+                    <param desc="Interface to select." multiplicity="1" name="selection" type="string"/>
+                </function>
+                <function name="setAllStatus">
+                    <desc>Set all ports by preconfigured setting (see also "changeStatusOfPort").</desc>
+                </function>
+                <function name="changeStatusOfPort">
+                    <desc>Set power status pre-configuration of a specific port (see also "setAllStatus").</desc>
+                    <param desc="Name of port." multiplicity="1" name="portName" type="string"/>
+                </function>
+                <function name="setParameterName">
+                    <desc>Function to set the name of the parameters if saved/loaded via the CSK_PersistentData module.</desc>
+                    <param desc="Name of the parameter." multiplicity="1" name="name" type="string"/>
+                </function>
+                <function name="sendParameters">
+                    <desc>Send parameters to CSK_PersistentData module if possible to save them.</desc>
+                </function>
+                <function name="loadParameters">
+                    <desc>Load parameters for this module from the CSK_PersistentData module if possible and use them.</desc>
+                </function>
+                <function name="setLoadOnReboot">
+                    <desc>Configure if this module should load its saved parameters at app/device boot up.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </function>
+                <function name="getCurrentPortStatus">
+                    <desc>Get current status of a specific port.</desc>
+                    <param desc="Name of port." multiplicity="1" name="port" type="string"/>
+                    <return desc="Current power status." multiplicity="?" name="status" type="bool"/>
+                </function>
+            </serves>
+        </crown>
+        <crown name="CSK_Logger">
+            <desc>Module to provide logger functionality to log / store messages of all others CSK modules. +
+Maybe the name of this module needs to be adapted to run first and also to log messages of the global scopes. +
+Check UI of this module for most features available by this module. +
+INFO: If using the "FileSink" feature, a SD card should be used to reduce write accesses on the internal flash storage of the device. +</desc>
+            <enum name="LogLevel" trait="released" type="string">
+                <desc>Level of messages to log.</desc>
+                <item desc="Log all messages." name="ALL">ALL</item>
+                <item desc="Log nothing." name="OFF">OFF</item>
+                <item desc="Log infos, warnings and severe errors." name="INFO">INFO</item>
+                <item desc="Log only severe errors." name="SEVERE">SEVERE</item>
+                <item desc="Log warnings and severe errors." name="WARNING">WARNING</item>
+            </enum>
+            <serves>
+                <event name="OnNewMessage">
+                    <desc>Notify latest received logging message.</desc>
+                    <param desc="Logging message" multiplicity="1" name="message" type="string"/>
+                </event>
+                <event name="OnNewCompleteLogfile">
+                    <desc>Notify all available log messages once.</desc>
+                    <param desc="Full temporary / stored logfile content." multiplicity="?" name="logfile" type="string"/>
+                </event>
+                <event name="OnNewFilepath">
+                    <desc>Notify path of the logging file.</desc>
+                    <param desc="Path" multiplicity="1" name="filepath" type="string"/>
+                </event>
+                <event name="OnNewFilename">
+                    <desc>Notify file name of the logging file.</desc>
+                    <param desc="Filename" multiplicity="1" name="filename" type="string"/>
+                </event>
+                <event name="OnNewLogLevel">
+                    <desc>Notify log level to use.</desc>
+                    <param desc="Level to log." multiplicity="1" name="level" type="string"/>
+                </event>
+                <event name="OnNewStatusConsoleSink">
+                    <desc>Notify status of console sink.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnNewStatusFileSinkActive">
+                    <desc>Notify status of file sink.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnNewStatusLoadParameterOnReboot">
+                    <desc>Notify status if parameters should be loaded on app / device boot up.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnPersistentDataModuleAvailable">
+                    <desc>Notify status if features of CSK_PersistentData module  are available.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnDataLoadedOnReboot">
+                    <desc>Event to call if module tried to load parameters and should be ready.</desc>
+                </event>
+                <event name="OnNewStatusAttachedToEngineLogger">
+                    <desc>Notify status to attach logger to engine logger.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnNewFullFilePath">
+                    <desc>Notify full path of the logging file (path + name).</desc>
+                    <param desc="Full filepath (path + name)." multiplicity="1" name="filepath" type="string"/>
+                </event>
+                <event name="OnNewParameterName">
+                    <desc>Notify name of persistent data parameter.</desc>
+                    <param desc="Parameter name" multiplicity="1" name="name" type="string"/>
+                </event>
+                <event name="OnUserLevelOperatorActive">
+                    <trait>released</trait>
+                    <desc>Status of Operator userlevel. Used internally in combination with the CSK_UserManagement module if available.</desc>
+                    <param desc="Status of Operator userlevel." multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnUserLevelMaintenanceActive">
+                    <trait>released</trait>
+                    <desc>Status of Maintenance userlevel. Used internally in combination with the CSK_UserManagement module if available.</desc>
+                    <param desc="Status of Maintenance userlevel." multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnUserLevelServiceActive">
+                    <trait>released</trait>
+                    <desc>Status of Service userlevel. Used internally in combination with the CSK_UserManagement module if available.</desc>
+                    <param desc="Status of Service userlevel." multiplicity="1" name="status" type="string"/>
+                </event>
+                <event name="OnUserLevelAdminActive">
+                    <desc>Status of Admin userlevel. Used internally in combination with the CSK_UserManagement module if available.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnNewLogfileSize">
+                    <desc>Notify max size of ligfile in bytes.</desc>
+                    <param desc="Size" multiplicity="1" name="size" type="int"/>
+                </event>
+                <event name="OnNewStatusCallbackSink">
+                    <desc>Notify status if the internal callbackSink for log messages is active.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <function name="pageCalled">
+                    <desc>Function to register "OnResume" of the module UI (only as helper function).</desc>
+                    <return desc="Empty string (only needed to simplify binding)." multiplicity="1" name="empty" type="string"/>
+                </function>
+                <function name="loadParameters">
+                    <desc>Load parameters for this module from the CSK_PersistentData module if possible and use them.</desc>
+                </function>
+                <function name="sendParameters">
+                    <desc>Send parameters to CSK_PersistentData module if possible to save them.</desc>
+                </function>
+                <function name="setLoadOnReboot">
+                    <desc>Configure if this module should load its saved parameters at app / device boot up.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </function>
+                <function name="setParameterName">
+                    <desc>Function to set the name of the parameters if saved/loaded via the CSK_PersistentData module.</desc>
+                    <param desc="Name of the parameter." multiplicity="1" name="name" type="string"/>
+                </function>
+                <function name="setLogLevel">
+                    <desc>Set log level.</desc>
+                    <param desc="Log level" multiplicity="1" name="level" ref="CSK_Logger.LogLevel" type="enum"/>
+                </function>
+                <function name="setConsoleSinkEnabled">
+                    <desc>Set status of console sink.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </function>
+                <function name="setFileSinkActive">
+                    <desc>Set status of file sink of the log.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </function>
+                <function name="setAttachToEngineLogger">
+                    <desc>Set status if logger should attach to engine logger.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </function>
+                <function name="setFilePath">
+                    <desc>Set path of the logging file.</desc>
+                    <param desc="Filepath" multiplicity="1" name="path" type="string"/>
+                </function>
+                <function name="setFileName">
+                    <desc>Set name of the logging file.</desc>
+                    <param desc="Filename" multiplicity="1" name="name" type="string"/>
+                </function>
+                <function name="setLogFileSize">
+                    <desc>Set size of the log file in bytes before truncating.</desc>
+                    <param desc="Size in bites. Has to be in the range [1024,104857600] bytes." multiplicity="1" name="size" type="int"/>
+                </function>
+                <function name="reloadLogsInUI">
+                    <desc>Function to reload logfile to show in UI.</desc>
+                </function>
+                <function name="setCallbackSinkActive">
+                    <desc>Function to configure if internal callback sink should be used to process incoming log messages.</desc>
+                    <param desc="Is TRUE per default to process incoming log messages. +&#10;It can make sense to set it to FALSE if e.g. &quot;FileSink&quot; is active as this will reduce the internal needed processing load to only focus on the FileSink, but then no log messages will be forwarded via &quot;OnNewMessage&quot;-event or shown in UI by this module." multiplicity="1" name="status" type="bool"/>
+                </function>
+            </serves>
+        </crown>
+        <crown name="CSK_DeviceScanner">
+            <desc>Module to scan and configure connected devices by using the Command.Scan CROWN. +
+This module provides a UI for all relevant features. +
+Typically the feature of this module is used like this: +
+{empty} +
+1) Scan for devices. If wanted only a specific interface can be preselected for the scan. +
+2) Select a found device. +
+3) Preset new values for this device. +
+4) Activate this new setup by sending it to the device. +</desc>
+            <serves>
+                <event name="OnNewDeviceTable">
+                    <desc>Notify json-list of found devices.</desc>
+                    <param desc="Json list of devices" multiplicity="1" name="deviceTable" type="string"/>
+                </event>
+                <event name="OnNewIP">
+                    <desc>Notify IP setting.</desc>
+                    <param desc="IP" multiplicity="1" name="ip" type="string"/>
+                </event>
+                <event name="OnNewSubnetMask">
+                    <desc>Notify Subnet setting.</desc>
+                    <param desc="Subnetmask" multiplicity="1" name="subnetMask" type="string"/>
+                </event>
+                <event name="OnNewGateway">
+                    <desc>Notify Gateway setting.</desc>
+                    <param desc="Gateway IP" multiplicity="1" name="gateway" type="string"/>
+                </event>
+                <event name="OnNewDHCPStatus">
+                    <desc>Notify DHCP status.</desc>
+                    <param desc="DHCP status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnNewErrorActive">
+                    <desc>Notify if error of input parameters is active.</desc>
+                    <param desc="Status of error." multiplicity="1" name="active" type="bool"/>
+                </event>
+                <event name="OnDeviceSelected">
+                    <desc>Notify if a device was selected.</desc>
+                    <param desc="Status if a device is selected." multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnNewScanStatus">
+                    <desc>Notify scan / setup status.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="string"/>
+                </event>
+                <event name="OnNewInterfaceSelected">
+                    <desc>Notify selected interface.</desc>
+                    <param desc="Selected interface" multiplicity="1" name="selection" type="string"/>
+                </event>
+                <event name="OnNewInterfaceList">
+                    <desc>Notify available interfaces.</desc>
+                    <param desc="list of interfaces" multiplicity="1" name="list" type="string"/>
+                </event>
+                <event name="OnUserLevelOperatorActive">
+                    <desc>Status of Operator userlevel. Used internally in combination with the CSK_UserManagement module if available.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnUserLevelMaintenanceActive">
+                    <desc>Status of Maintenance userlevel. Used internally in combination with the CSK_UserManagement module if available.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnUserLevelServiceActive">
+                    <desc>Status of Service userlevel. Used internally in combination with the CSK_UserManagement module if available.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnUserLevelAdminActive">
+                    <desc>Status of Admin userlevel. Used internally in combination with the CSK_UserManagement module if available.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <function name="pageCalled">
+                    <desc>Function to register "OnResume" of the module UI (only as helper function).</desc>
+                    <return desc="Empty string (only needed to simplify binding)." multiplicity="1" name="empty" type="string"/>
+                </function>
+                <function name="scanForDevices">
+                    <desc>Scan for connected devices via Command.Scan API.</desc>
+                </function>
+                <function name="selectDevice">
+                    <desc>Select entry of device list (used in UI).</desc>
+                    <param desc="Selected device" multiplicity="1" name="selection" type="string"/>
+                </function>
+                <function name="setDeviceIP">
+                    <desc>Set new IP for selected device (see "selectDevice").</desc>
+                    <param desc="IP" multiplicity="1" name="ip" type="string"/>
+                </function>
+                <function name="setSubnetMask">
+                    <desc>Set subnetmask for selected device (see "selectDevice").</desc>
+                    <param desc="Subnetmask" multiplicity="1" name="subnetMask" type="string"/>
+                </function>
+                <function name="setGateway">
+                    <desc>Set Gateways for selected device (see "selectDevice").</desc>
+                    <param desc="Gateway IP" multiplicity="1" name="gateway" type="string"/>
+                </function>
+                <function name="setDHCP">
+                    <desc>Set DHCP status for selected device (see "selectDevice").</desc>
+                    <param desc="Status of DHCP" multiplicity="1" name="status" type="bool"/>
+                </function>
+                <function name="sendNewConfig">
+                    <desc>Try to apply new config on selected device (before this use the "set..." functions).</desc>
+                </function>
+                <function name="getDeviceListJSON">
+                    <desc>Get json-list of found devices.</desc>
+                    <return desc="Json list of devices" multiplicity="1" name="deviceList" type="string"/>
+                </function>
+                <function name="selectInterface">
+                    <desc>Select interface to search on.</desc>
+                    <param desc="Interface ID" multiplicity="1" name="selection" type="string"/>
+                </function>
+            </serves>
+        </crown>
+        <crown name="CSK_MultiRemoteCamera">
+            <trait>released</trait>
+            <desc>Module to provide RemoteCamera configuration functionality. +
+Multiple instances can be created and image processing will run in multiple threads on the device. +
+Incoming images can be forwarded to other apps / modules (see "setProcessingMode") +
+{empty} +
+**Typical features to use: ** +
+{empty} +
+1) If multiple camera instances are available, selecte a specific camera via "setSelectedCam" +
+2) Set camera IP via "setCameraIP" +
+3) Select if GigE Vision camera or not via "setGigEVision" +
+3) Opt. use set-Function like setResizeFactor, setShutterTime, ... +
+3) Set processing mode via "setProcessingMode" +
+4) Start camera via "connectCamera" +
+{empty} +
+There is also the possibility to edit GigE Vision camera parameters (check also available UI). +</desc>
+            <enum name="CameraModel" trait="released" type="string">
+                <desc>Camera type.</desc>
+                <item desc="SICK Pico/MidiCam2" name="SICK_Gen2">SICK Pico/MidiCam2</item>
+                <item desc="Basler a2A1920-51gc" name="Basler">Basler a2A1920-51gc</item>
+            </enum>
+            <enum name="ColorType" trait="released" type="string">
+                <desc>Camera color type.</desc>
+                <item desc="Gray values" name="MONO8">MONO8</item>
+                <item desc="Raw data (Bayer pattern)." name="RAW8">RAW8</item>
+                <item desc="Color" name="COLOR8">COLOR8</item>
+            </enum>
+            <enum name="ProcessingMode" trait="released" type="string">
+                <desc>Processing in same module or in another app.</desc>
+                <item desc="'SCRIPT'+'APP' (e.g. you want to process the image within the internal script but would like to show the image also in another app)." name="BOTH">BOTH</item>
+                <item desc="Handle image only in this module." name="SCRIPT">SCRIPT</item>
+                <item desc="Forward incoming images as event, so that other apps/modules can handle them." name="APP">APP</item>
+            </enum>
+            <enum name="AcquisitionMode" trait="released" type="string">
+                <desc>Acquisition / trigger mode of the camera.</desc>
+                <item desc="Software trigger (e.g. via UI button or incoming command like TCPIP command)." name="SOFTWARE_TRIGGER">SOFTWARE_TRIGGER</item>
+                <item desc="Trigger via digital input." name="HARDWARE_TRIGGER">HARDWARE_TRIGGER</item>
+                <item desc="Continuous image acquisition with fixed framerate." name="FIXED_FREQUENCY">FIXED_FREQUENCY</item>
+            </enum>
+            <enum name="ImageFormat" trait="released" type="string">
+                <desc>Format to save images.</desc>
+                <item desc="BMP" name="bmp">bmp</item>
+                <item desc="JPG" name="jpg">jpg</item>
+                <item desc="PNG" name="png">png</item>
+            </enum>
+            <serves>
+                <event name="OnNewGain">
+                    <desc>Notify gain of currently selected camera instance.</desc>
+                    <param desc="Gain" multiplicity="1" name="gain" type="float"/>
+                </event>
+                <event name="OnNewShutterTime">
+                    <desc>Notify shutter time of currently selected camera instance.</desc>
+                    <param desc="Shutter time in [ms]." multiplicity="1" name="shutterTime" type="int"/>
+                </event>
+                <event name="OnNewFramerate">
+                    <desc>Notify framerate of currently selected camera instance.</desc>
+                    <param desc="Framerate" multiplicity="1" name="framerate" type="int"/>
+                </event>
+                <event name="OnNewResizeFactor">
+                    <desc>Notify resize factor of internal image processing function of currently selected camera.</desc>
+                    <param desc="Factor (0.1. - 1.0)." multiplicity="1" name="factor" type="float"/>
+                </event>
+                <event name="OnNewAcquisitionMode">
+                    <desc>Notify acquisition mode of currently selected camera.</desc>
+                    <param desc="Acquisition mode" multiplicity="1" name="mode" type="string"/>
+                </event>
+                <event name="OnNewFOVX">
+                    <desc>Notify field of view in x-direction of currently selected camera.</desc>
+                    <param desc="Min/Max" multiplicity="+" name="range" type="int"/>
+                </event>
+                <event name="OnNewFOVY">
+                    <desc>Notify field of view in y-direction of currently selected camera.</desc>
+                    <param desc="Min/Max" multiplicity="+" name="range" type="int"/>
+                </event>
+                <event name="OnSWTriggerActive">
+                    <desc>Notify if SOFTWARE_TRIGGER camera mode is active (e.g. to visualize relevant UI elements).</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnNewHardwareTriggerDelay">
+                    <desc>Notify hardware trigger delay of currently selected camera instance.</desc>
+                    <param desc="Delay in [ms]." multiplicity="1" name="value" type="int"/>
+                </event>
+                <event name="OnHWTriggerActive">
+                    <desc>Notify if hardware trigger is active for currently selected camera.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnCameraConnected">
+                    <desc>Notify camera connection status.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnScanCamera">
+                    <desc>Notify if scanning for connected camera is active.</desc>
+                    <param desc="Status" multiplicity="1" name="active" type="bool"/>
+                </event>
+                <event name="OnNewIPCheck">
+                    <desc>Notify if inserted IP has correct format.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnCurrentCameraIP">
+                    <desc>Notify IP of currently selected camera.</desc>
+                    <param desc="IP" multiplicity="1" name="ip" type="string"/>
+                </event>
+                <event name="OnNewSelectedCam">
+                    <desc>Notify no. of currently selected camera instance.</desc>
+                    <param desc="Camera no." multiplicity="1" name="cameraNo" type="int"/>
+                </event>
+                <event name="OnRegisterCameraNUM">
+                    <desc>Example of dynamically created event to register camera intsance to image processing function. +
+NUM will be replaced by the number of instance (e.g. "OnRegisterCamera1"). +
+INFO: Other modules can check via "Script.isServedAsEvent" if event of sepecific instance exists.</desc>
+                    <param alias="Image.Provider.RemoteCamera" desc="Camera instance to register." multiplicity="1" name="camera" type="handle"/>
+                </event>
+                <event name="OnDeregisterCameraNUM">
+                    <desc>Example of dynamically created event to deregister camera intsance to image processing function. +
+NUM will be replaced by the number of instance (e.g. "OnDeregisterCamera1"). +
+INFO: Other modules can check via "Script.isServedAsEvent" if event of sepecific instance exists.</desc>
+                    <param alias="Image.Provider.RemoteCamera" desc="Camera instance to deregister." multiplicity="1" name="camera" type="handle"/>
+                </event>
+                <event name="OnNewViewerId">
+                    <desc>Notify currently used viewerID (e.g. to show correct viewer in UI).</desc>
+                    <param desc="viewerID" multiplicity="1" name="viewerID" type="string"/>
+                </event>
+                <event name="OnNewImageProcessingParameter">
+                    <desc>Event to share processing parameters to the instances.</desc>
+                    <param desc="Number of the instance to receive the parameter." multiplicity="1" name="cameraNo" type="int"/>
+                    <param desc="Name of the parameter." multiplicity="1" name="parameter" type="string"/>
+                    <param desc="Value to set." multiplicity="?" name="value" type="auto"/>
+                </event>
+                <event name="OnNewImageCameraNUM">
+                    <trait>released</trait>
+                    <desc>Example of dynamically created event to transfer incoming image of camera instance. +
+NUM will be replaced by the number of instance (e.g. "OnNewImageCamera1"). +
+INFO: Other modules can check via "Script.isServedAsEvent" if event of sepecific instance exists.</desc>
+                    <param alias="Image" desc="Image" multiplicity="1" name="image" type="object"/>
+                    <param desc="Timestamp is created directly after module received new image." multiplicity="?" name="timestamp" type="int"/>
+                </event>
+                <event name="OnNewStatusDigitalTriggerPause">
+                    <desc>Notify if digital trigger input should be ignored for currently selected camera instance.
+(e.g. used to freeze/inspect latest incoming image).</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnNewGigEVisionStatus">
+                    <desc>Notify if currently selected camera is GigEVision.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnNewGigEVisionParameters">
+                    <desc>Notify available GigEVision parameter list received from connected camera.</desc>
+                    <param desc="Parameter list" multiplicity="1" name="parameters" type="string"/>
+                </event>
+                <event name="OnNewColorMode">
+                    <desc>Notify color mode of currently selected camera.</desc>
+                    <param desc="Color mode" multiplicity="1" name="mode" type="string"/>
+                </event>
+                <event name="OnPersistentDataModuleAvailable">
+                    <desc>Notify status if features of CSK_PersistentData module are available.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnNewParameterName">
+                    <desc>Notify name of the parameters if saved/loaded via the CSK_PersistentData module for currently selected camera instance.</desc>
+                    <param desc="Name" multiplicity="1" name="parametersName" type="string"/>
+                </event>
+                <event name="OnNewGigEVisionCurrentParameter">
+                    <desc>Notify currently selected GigEVision parameter name to edit.</desc>
+                    <param desc="Parameter name" multiplicity="1" name="name" type="string"/>
+                </event>
+                <event name="OnNewGigEVisionParameterType">
+                    <desc>Notify type of currently selected GigEVision parameter.</desc>
+                    <param desc="Value Type (e.g. 'String'/'Float'/'Integer')." multiplicity="1" name="valueType" type="string"/>
+                </event>
+                <event name="OnNewGigEVisionValue">
+                    <desc>Notify value of currently selected GigEVision parameter.</desc>
+                    <param desc="Value" multiplicity="1" name="value" type="string"/>
+                </event>
+                <event name="OnNewSavingImagesPath">
+                    <desc>Notify path to save images of currently selected camera.</desc>
+                    <param desc="Path" multiplicity="1" name="path" type="string"/>
+                </event>
+                <event name="OnNewLoggingMessage">
+                    <desc>Notify latest logging message of this module.</desc>
+                    <param desc="Latest log message." multiplicity="1" name="message" type="string"/>
+                </event>
+                <event name="OnNewStatusTempImageActive">
+                    <desc>Notify if latest image of currently selected camera instance should be temporarily be saved to store them eventually.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnNewImageQueueCamera">
+                    <desc>Notify queue size of module internal image processing function of currently selected camera.</desc>
+                    <param desc="Size" multiplicity="1" name="value" type="string"/>
+                </event>
+                <event name="OnNewStatusLoadParameterOnReboot">
+                    <desc>Notify status if parameters should be loaded on app/device boot up.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnNewFPSCamera">
+                    <desc>Notify latest calculated FPS of currently selected camera.</desc>
+                    <param desc="Frames per second." multiplicity="1" name="fps" type="string"/>
+                </event>
+                <event name="OnNewStatusViewerActive">
+                    <desc>Notify if UI viewer of currently selected camera instance should show image.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnNewCameraOverviewTable">
+                    <desc>Notify content for camera overview in UI.</desc>
+                    <param desc="Data content for table." multiplicity="1" name="data" type="string"/>
+                </event>
+                <event name="OnNewProcessingMode">
+                    <desc>Notify processing mode of currently selected camera.</desc>
+                    <param desc="Mode (BOTH, SCRIPT or APP)." multiplicity="1" name="mode" type="string"/>
+                </event>
+                <event name="OnNewCameraList">
+                    <desc>Notify list of camera instances.</desc>
+                    <param desc="List of camera instances." multiplicity="1" name="list" type="string"/>
+                </event>
+                <event name="OnNewStatusSaveAllImagesActive">
+                    <desc>Notify if all images should be saved.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnNewImageFilePrefix">
+                    <desc>Notify image file prefix to use.</desc>
+                    <param desc="Prefix (followed by internal counter)" multiplicity="1" name="prefix" type="string"/>
+                </event>
+                <event name="OnNewValueToForwardNUM">
+                    <desc>Example of dynamically created event to Forward thread internal values to e.g. be notified with single event related to UI. +
+NUM will be replaced by the number of instance (e.g. "OnNewValueToForward1"). +
+INFO: Other modules can check via "Script.isServedAsEvent" if event of sepecific instance exists.</desc>
+                    <param desc="Related, general event." multiplicity="1" name="event" type="string"/>
+                    <param desc="Value to notify." multiplicity="1" name="value" type="auto"/>
+                </event>
+                <event name="OnNewImageSaveFormat">
+                    <desc>Notify format to save images.</desc>
+                    <param desc="BMP / JPEG / PNG" multiplicity="1" name="format" type="string"/>
+                </event>
+                <event name="OnNewFormatCompression">
+                    <desc>Notify value of compression for image compression.</desc>
+                    <param desc="INFO: Depends on format (see AppEngine function Image.save)." multiplicity="1" name="compression" type="float"/>
+                </event>
+                <event name="OnNewMonitoringState">
+                    <desc>Notify if currently selected camera is available or not.</desc>
+                    <param desc="State" multiplicity="1" name="state" type="bool"/>
+                </event>
+                <event name="OnNewSwitchMode">
+                    <desc>Notify if currently selected camera is in SwitchMode.</desc>
+                    <param desc="State" multiplicity="1" name="state" type="bool"/>
+                </event>
+                <event name="OnNewMonitoring">
+                    <desc>Notify if currently selected camera is monitored.</desc>
+                    <param desc="State" multiplicity="1" name="state" type="bool"/>
+                </event>
+                <event name="OnNewMonitoringStateCams">
+                    <desc>Notify if the cameras is available or not.</desc>
+                    <param desc="camera number" multiplicity="1" name="cameraNr" type="int"/>
+                    <param desc="state" multiplicity="1" name="state" type="bool"/>
+                </event>
+                <event name="OnNewGigEVisionTableContent">
+                    <desc>Notify list of available GigE Vision parameters (for UI table view).</desc>
+                    <param desc="List" multiplicity="1" name="list" type="string"/>
+                </event>
+                <event name="OnNewGigEVisionConfigTableContent">
+                    <desc>Notify list of custom GigE Vision configs (for UI table view).</desc>
+                    <param desc="" multiplicity="1" name="content" type="string"/>
+                </event>
+                <event name="OnUserLevelOperatorActive">
+                    <trait>released</trait>
+                    <desc>Status of Operator userlevel. Used internally in combination with the CSK_UserManagement module if available.</desc>
+                    <param desc="Status of Operator userlevel." multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnUserLevelMaintenanceActive">
+                    <trait>released</trait>
+                    <desc>Status of Maintenance userlevel. Used internally in combination with the CSK_UserManagement module if available.</desc>
+                    <param desc="Status of Maintenance userlevel." multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnUserLevelServiceActive">
+                    <trait>released</trait>
+                    <desc>Status of Service userlevel. Used internally in combination with the CSK_UserManagement module if available.</desc>
+                    <param desc="Status of Service userlevel." multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnUserLevelAdminActive">
+                    <desc>Status of Admin userlevel. Used internally in combination with the CSK_UserManagement module if available.</desc>
+                    <param desc="Status of Admin userlevel." multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnNewCameraModel">
+                    <desc>Camera-Model which is connected. Like Midicam2 or Basler-Camera.</desc>
+                    <param desc="Model of the camera." multiplicity="1" name="cameraModel" type="string"/>
+                </event>
+                <event name="OnNewNumberOfCameras">
+                    <desc>Notify number of camera instances.</desc>
+                    <param desc="Number of cameras." multiplicity="1" name="numberOfCameras" type="string"/>
+                </event>
+                <event name="OnNewImageSizeToShare">
+                    <desc>Notify if image size changed to other modules.</desc>
+                    <param desc="Name of event providing images." multiplicity="1" name="eventname" type="string"/>
+                </event>
+                <event name="OnNewStatusWaitingForCameraBootUp">
+                    <desc>Notify if module is curently waiting for camera boot up.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <function name="pageCalled">
+                    <desc>Function to register "OnResume" of the module UI (only as helper function).</desc>
+                    <return desc="Empty string (only needed to simplify binding)." multiplicity="1" name="emptyString" type="string"/>
+                </function>
+                <function name="setShutterTime">
+                    <desc>Set shutter time of currently selected camera instance (see "setSelectedCam").</desc>
+                    <param desc="Shutter time in [ms]." multiplicity="1" name="shutterTime" type="int"/>
+                </function>
+                <function name="setGain">
+                    <desc>Set gain of currently selected camera instance (see "setSelectedCam").</desc>
+                    <param desc="Gain" multiplicity="1" name="gain" type="float"/>
+                </function>
+                <function name="setFramerate">
+                    <desc>Set framerate (in FIXED_FREQUENCY mode)  of currently selected camera instance (see "setSelectedCam").</desc>
+                    <param desc="Framerate (frames per second)." multiplicity="1" name="framerate" type="int"/>
+                </function>
+                <function name="setResizeFactor">
+                    <desc>Set resize factor used in module internal image processing of currently selected camera instance (see "setSelectedCam").</desc>
+                    <param desc="Factor (0.1 - 1.0)." multiplicity="1" name="factor" type="float"/>
+                </function>
+                <function name="setAcquisitionMode">
+                    <desc>Set acquisition mode of currently selected camera instance (see "setSelectedCam").</desc>
+                    <param desc="Acquisition mode" multiplicity="1" name="mode" ref="CSK_MultiRemoteCamera.AcquisitionMode" type="enum"/>
+                </function>
+                <function name="setFOVX">
+                    <desc>Set Field of view in x-direction in [pixel] of currently selected camera instance (see "setSelectedCam"). +
+Needs to be activated via "setFOV" after this.</desc>
+                    <param desc="Array with Min/Max value." multiplicity="+" name="values" type="int"/>
+                </function>
+                <function name="setFOVY">
+                    <desc>Set Field of view in y-direction in [pixel] of currently selected camera instance (see "setSelectedCam"). +
+Needs to be activated via "setFOV" after this.</desc>
+                    <param desc="Array with Min/Max value." multiplicity="+" name="values" type="int"/>
+                </function>
+                <function name="setFOV">
+                    <desc>Activate preconfigured field of view of currently selected camera instance (see "setSelectedCam").</desc>
+                </function>
+                <function name="cameraSoftwareTrigger">
+                    <desc>Trigger SW trigger on currently selected camera instance (see "setSelectedCam").</desc>
+                </function>
+                <function name="setHardwareTriggerDelay">
+                    <desc>Set trigger delay (in HARDWARE_TRIGGER mode) used in cFlow of currently selected camera instance (see "setSelectedCam").</desc>
+                    <param desc="Delay in [ms]." multiplicity="1" name="value" type="int"/>
+                </function>
+                <function name="connectCamera">
+                    <desc>Connect to currently selected camera instance (see "setSelectedCam").</desc>
+                </function>
+                <function name="setCameraIP">
+                    <desc>Set IP of currently selected camera instance (see "setSelectedCam").</desc>
+                    <param desc="IP" multiplicity="1" name="ip" type="string"/>
+                </function>
+                <function name="getCameraIP">
+                    <desc>Get IP of currently selected camera instance (see "setSelectedCam").</desc>
+                    <return desc="IP" multiplicity="1" name="ip" type="string"/>
+                </function>
+                <function name="getAcquisitionMode">
+                    <desc>Get acquisition mode of currently selected camera instance (see "setSelectedCam").</desc>
+                    <return desc="Acquisition mode (e.g. 'FIXED_FREQUENCY' / 'SOFTWARE_TRIGGER' / 'HARDWARE_TRIGGER')." multiplicity="1" name="mode" type="string"/>
+                </function>
+                <function name="getFramerate">
+                    <desc>Get framerate (in FIXED_FREQUENCY mode)  of currently selected camera instance (see "setSelectedCam").</desc>
+                    <return desc="Framerate (frames per second)." multiplicity="1" name="framerate" type="int"/>
+                </function>
+                <function name="getResizeFactor">
+                    <desc>Get resize factor used in module internal image processing of currently selected camera instance (see "setSelectedCam").</desc>
+                    <return desc="Factor (0.1 - 1.0)." multiplicity="1" name="factor" type="float"/>
+                </function>
+                <function name="getGain">
+                    <desc>Get gain of currently selected camera instance (see "setSelectedCam").</desc>
+                    <return desc="Gain" multiplicity="1" name="gain" type="float"/>
+                </function>
+                <function name="getShutterTime">
+                    <desc>Get shutter time of currently selected camera instance (see "setSelectedCam").</desc>
+                    <return desc="Shutter time in [ms]." multiplicity="1" name="shutterTime" type="int"/>
+                </function>
+                <function name="getHardwareTriggerDelay">
+                    <desc>Get trigger delay (in HARDWARE_TRIGGER mode) used in cFlow of currently selected camera instance (see "setSelectedCam").</desc>
+                    <return desc="Delay in [ms]." multiplicity="1" name="value" type="int"/>
+                </function>
+                <function name="getFOVX">
+                    <desc>Get Field of view in x-direction in [pixel] of currently selected camera instance (see "setSelectedCam").</desc>
+                    <return desc="Array with min/max values." multiplicity="+" name="values" type="int"/>
+                </function>
+                <function name="getFOVY">
+                    <desc>Get Field of view in y-direction in [pixel] of currently selected camera instance (see "setSelectedCam").</desc>
+                    <return desc="Array with min/max values." multiplicity="+" name="values" type="int"/>
+                </function>
+                <function name="startCamera">
+                    <desc>Start currently selected camera (see 'setSelectedCam').</desc>
+                </function>
+                <function name="stopCamera">
+                    <desc>Stop currently selected camera (see 'setSelectedCam').</desc>
+                </function>
+                <function name="setColorMode">
+                    <desc>Set color mode of currently selected camera instance (see "setSelectedCam").</desc>
+                    <param desc="Color mode" multiplicity="1" name="mode" ref="CSK_MultiRemoteCamera.ColorType" type="enum"/>
+                </function>
+                <function name="getColorMode">
+                    <desc>Get color mode of currently selected camera instance (see "setSelectedCam").</desc>
+                    <return desc="Color mode (e.g. MONO8, COLOR8, RAW8)." multiplicity="1" name="mode" type="string"/>
+                </function>
+                <function name="setSelectedCam">
+                    <desc>Select single camera instance (first select a instance, after that other functions like "set"-function will use this camera instance).</desc>
+                    <param desc="camera intance no. to select." multiplicity="1" name="camNo" type="int"/>
+                </function>
+                <function name="getSelectedCam">
+                    <desc>Get currently selected camera instance (see "setSelectedCam").</desc>
+                    <return desc="Camera instance no." multiplicity="1" name="camNo" type="int"/>
+                </function>
+                <function name="setDigitalTriggerPause">
+                    <desc>Use preset trigger delay (in HARDWARE_TRIGGER mode) used in cFlow of currently selected camera instance (see "setSelectedCam").</desc>
+                </function>
+                <function name="getGigEVision">
+                    <desc>Get info if currently selected camera instance is a GigEVision camera (see "setSelectedCam").</desc>
+                    <return desc="Status" multiplicity="1" name="status" type="bool"/>
+                </function>
+                <function name="setGigEVision">
+                    <desc>Select if currently selected camera instance is a GigEVision camera.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </function>
+                <function name="setParameterName">
+                    <desc>Function to set the name of the parameters if saved/loaded via the CSK_PersistentData module.</desc>
+                    <param desc="Name of the parameter." multiplicity="1" name="name" type="string"/>
+                </function>
+                <function name="sendParameters">
+                    <desc>Send parameters to CSK_PersistentData module if possible to save them.</desc>
+                </function>
+                <function name="loadParameters">
+                    <desc>Load parameters for this module from the CSK_PersistentData module if possible and use them.</desc>
+                </function>
+                <function name="setGigEVisionParameterName">
+                    <desc>Set GigEVision ParameterName to add for custom GigE Vision setting (see "addGigEVisionConfig").</desc>
+                    <param desc="Name of GigEVision parameter." multiplicity="1" name="name" type="string"/>
+                </function>
+                <function name="setGigEVisionParameterValue">
+                    <desc>Set GigEVision ParameterValue to add  for custom GigE Vision setting (see "addGigEVisionConfig").</desc>
+                    <param desc="Value" multiplicity="1" name="value" type="string"/>
+                </function>
+                <function name="setSavingPath">
+                    <desc>Set path to save images via "saveImage".</desc>
+                    <param desc="Path on device (e.g. &quot;public/images&quot;)." multiplicity="1" name="path" type="string"/>
+                </function>
+                <function name="setTempImageActive">
+                    <desc>Set status if images should be temporarily be saved to save them later on via "saveImage".</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </function>
+                <function name="triggerImageSaving">
+                    <desc>Notify event for selected camera to trigger the saving of the latest temporarily saved image.</desc>
+                </function>
+                <function name="setLoadOnReboot">
+                    <desc>Configure if this module should load its saved parameters at app/device boot up.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </function>
+                <function name="setViewerActive">
+                    <desc>Set status if modules UI viewer should show the images.</desc>
+                    <param desc="Set to FALSE to save processing time if visualization is not necessary in modules UI." multiplicity="1" name="status" type="bool"/>
+                </function>
+                <function name="setProcessingMode">
+                    <desc>ProcessingMode to define processing in this app or in a other app.</desc>
+                    <param desc="Mode to use." multiplicity="1" name="mode" ref="CSK_MultiRemoteCamera.ProcessingMode" type="enum"/>
+                </function>
+                <function name="setSaveAllImages">
+                    <desc>Set if all incoming images should be saved for currently selected camera.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </function>
+                <function name="setImageFilePrefix">
+                    <desc>Set prefix for filename of saved images for currently selected camera.</desc>
+                    <param desc="Prefix (followed by internal counter)." multiplicity="1" name="prefix" type="string"/>
+                </function>
+                <function name="setImageSaveFormat">
+                    <desc>Set format to store images with.</desc>
+                    <param desc="Image format" multiplicity="1" name="format" ref="CSK_MultiRemoteCamera.ImageFormat" type="enum"/>
+                </function>
+                <function name="setImageSaveFormatCompression">
+                    <desc>Set compression to save images (depends on format type).</desc>
+                    <param desc="See AppEngine CROWN Image.save" multiplicity="1" name="comp" type="float"/>
+                </function>
+                <function name="getProcessingMode">
+                    <desc>Get processing mode of currently selected camera.</desc>
+                    <return desc="Mode (APP, SCRIPT, BOTH)." multiplicity="1" name="mode" type="string"/>
+                </function>
+                <function name="setSwitchMode">
+                    <desc>Set Switch-Mode for using multiple cameras via switch. This parameter will influence the "DeviceLinkThroughputLimit"-Parameter. +
+INFO: Please make sure to restart the cameras (e.g. via "restartAllCameras()" ) after adding new camera instances, so that the "DeviceLinkThroughputLimit" can be recalculated by the total amount of used cameras.</desc>
+                    <param desc="Status. 'TRUE' if switch is used." multiplicity="1" name="status" type="bool"/>
+                </function>
+                <function name="setCameraMonitoring">
+                    <desc>Function to select if camera status should be monitored on CameraOverView UI.</desc>
+                    <param desc="State" multiplicity="1" name="state" type="bool"/>
+                </function>
+                <function name="cameraSpecificSoftwareTrigger">
+                    <desc>Trigger a camera snapshot with camera selection.</desc>
+                    <param desc="Camera to trigger." multiplicity="1" name="cameraNo" type="int"/>
+                </function>
+                <function name="disconnectCamera">
+                    <desc>Function to disconnect currently selected camera instance (see "setSelectedCam").</desc>
+                </function>
+                <function name="selectGigEVisionParameterNameViaUITable">
+                    <desc>Select GigE Vision Parameter to edit in UI.</desc>
+                    <param desc="Selected table entry." multiplicity="1" name="selection" type="string"/>
+                </function>
+                <function name="addGigEVisionConfig">
+                    <desc>Add preselected value to custom GigE Vision config (see "setGigEVisionParameter..." functions).</desc>
+                </function>
+                <function name="removeGigEVisionConfig">
+                    <desc>Remove preselected value from custom GigE Vision config (see "setGigEVisionParameterName" functions).</desc>
+                </function>
+                <function name="selectGigEVisionConfigViaUITable">
+                    <desc>Select GigE Vision parameter within custom config in UI table view (see also "removeGigEVisionConfig").</desc>
+                    <param desc="Selected entry within config table." multiplicity="1" name="selection" type="string"/>
+                </function>
+                <function name="updateConfig">
+                    <desc>Update camera config (e.g. to activate new custom GigE Vision config).</desc>
+                </function>
+                <function name="selectGigEVisionConfig">
+                    <desc>Select config entry in table of custom GigE Vision config (see also "removeGigEVisionConfig").</desc>
+                    <param desc="Selected entry within config table." multiplicity="1" name="selection" type="int"/>
+                </function>
+                <function name="getInstancesAmount">
+                    <desc>Get amount of created remote camera instances.</desc>
+                    <return desc="Amount" multiplicity="1" name="amount" type="int"/>
+                </function>
+                <function name="addInstance">
+                    <desc>Function to add an additional camera instance.</desc>
+                </function>
+                <function name="resetInstances">
+                    <desc>Function to reset instances to one single camera instance. +
+IMPORTANT: As instances start their own threads, the module needs to be restarted if new instances are needed... (see AppEngine docu for "Script.startScript").</desc>
+                </function>
+                <function name="restartAllCameras">
+                    <desc>Function to restart all camera instances.</desc>
+                </function>
+                <function name="setCameraModel">
+                    <desc>Connected camera-model like Midicam2 or Basler-Camera.</desc>
+                    <param desc="Camera model" multiplicity="1" name="camModel" ref="CSK_MultiRemoteCamera.CameraModel" type="enum"/>
+                </function>
+            </serves>
+        </crown>
+        <crown name="CSK_PersistentData">
+            <trait>released</trait>
+            <desc>Module to provide data storage functionality incl. complex data types like Images, EdgeMatcher etc. +
+{empty} +
+*Function scope :* +
+1) Possibility to save tables into persistent data. +
+1.1) Main DataSet with sub parameters of each available / configured module. +
+1.2) Will be handled internally as Container + table content. +
+1.3) Saves data as a binary file. +
+{empty} +
+2) This module will provide a (loaded) DataSet for other CSK modules. +
+2.1)  This DataSet can hold multiple ParameterSets by name. +
+2.1.1) Internally, this is one Container with multiple Sub-Containers. +
+2.2)  The module can provide SubContainer content to other modules, selected by its name. +
+{empty} +
+3) Other modules can define inside of the parameters, if they should load their parameters on app reboot. +
+{empty} +
+4) This module will notify a "CSK_PersistentData.OnInitialDataLoaded" event, so that other modules can register on that event to load their specific parameters as soon as they are available. +
+{empty} +
+*How to use:* +
+*Save* +
+1) Via "addParameter" it is possible to send (multiple times) data as a Container to this module and to store it with a specific parameter name. (e.g. "cameraSetup1"). +
+2) Via "setModuleParameterName" it can be defined, which parameter should be loaded for a specific module during app/device reboot and if this should be active. +
+3) Via "setPath" it can be defined, where to store the full parameter dataset (including all available module parameters). +
+4) Via "saveData" the module will save the parameter dataset within a file defined with "setPath". +
+{empty} +
+ *Load* +
+1) Try to load saved parameter dataset via "loadContent" out of file defined via "setPath". +
+1.1) Info: With app/device reboot, the module will try this automatically and will notify the event "OnInitialDataLoaded" if successful. +
+2) Other modules can now load their specific parameter via "getParameter". +</desc>
+            <serves>
+                <event name="OnNewDataPath">
+                    <desc>Notify path of parameter set.</desc>
+                    <param desc="Path of the parameters." multiplicity="1" name="parameterPath" type="string"/>
+                </event>
+                <event name="OnNewFeedbackStatus">
+                    <desc>Notify current module status.</desc>
+                    <param desc="Status of the module." multiplicity="1" name="status" type="string"/>
+                </event>
+                <event name="OnNewContent">
+                    <desc>Notify new content in parameter set.</desc>
+                    <param desc="List of content." multiplicity="1" name="list" type="string"/>
+                </event>
+                <event name="OnInitialDataLoaded">
+                    <desc>Notify that inital parameter set was loaded after app/device reboot.</desc>
+                </event>
+                <event name="OnNewDatasetList">
+                    <desc>Notify list of dataset entries.</desc>
+                    <param desc="List of entries." multiplicity="?" name="list" type="string"/>
+                </event>
+                <event name="OnNewParameterTableInfo">
+                    <desc>Notify table info of parameters. Used within the UI to show content.</desc>
+                    <param desc="Data content of selected dataset." multiplicity="1" name="content" type="string"/>
+                </event>
+                <event name="OnNewParameterSelection">
+                    <desc>Notify current parameter dataset selection. E.g. used within the UI to select what content to show.</desc>
+                    <param desc="Name of the parameter dataset." multiplicity="1" name="parameterName" type="string"/>
+                </event>
+                <event name="OnInstanceAmountAvailable">
+                    <desc>Notify if amount of instances are available.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnNewStatusTempFileAvailable">
+                    <desc>Notify if temporary uploaded parameter file is available.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnUserLevelOperatorActive">
+                    <desc>Status of Operator userlevel. Used internally in combination with the CSK_UserManagement module if available.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnUserLevelMaintenanceActive">
+                    <desc>Status of Maintenance userlevel. Used internally in combination with the CSK_UserManagement module if available.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnUserLevelServiceActive">
+                    <desc>Status of Service userlevel. Used internally in combination with the CSK_UserManagement module if available.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnUserLevelAdminActive">
+                    <desc>Status of Admin userlevel. Used internally in combination with the CSK_UserManagement module if available.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnNewUserManagementTrigger">
+                    <desc>Notify trigger to update UserManagement status.</desc>
+                </event>
+                <function name="saveData">
+                    <desc>Save current parameter set.</desc>
+                    <return desc="Success of saving parameters." multiplicity="1" name="success" type="bool"/>
+                </function>
+                <function name="loadContent">
+                    <desc>Load set of parameters out of path (see "setPath").</desc>
+                    <return desc="Success of loading parameter set." multiplicity="1" name="success" type="bool"/>
+                </function>
+                <function name="getParameter">
+                    <desc>Provide parameters of current persistent data by name.</desc>
+                    <param desc="identification name of the parameters to provide." multiplicity="1" name="name" type="string"/>
+                    <return alias="Container" desc="Parameters" multiplicity="?" name="dataContent" type="object"/>
+                </function>
+                <function name="addParameter">
+                    <desc>Add incoming parameters (from other CSK modules) to current persistent data.</desc>
+                    <param alias="Container" desc="Parameters to store" multiplicity="1" name="data" type="object"/>
+                    <param desc="identification name to store the parameters." multiplicity="1" name="name" type="string"/>
+                </function>
+                <function name="setPath">
+                    <desc>Set the path to load/save the parameter set.</desc>
+                    <param desc="Path of the parameter set." multiplicity="1" name="path" type="string"/>
+                </function>
+                <function name="getVersion">
+                    <desc>Get version of module.</desc>
+                    <return desc="Version of module." multiplicity="1" name="version" type="string"/>
+                </function>
+                <function name="pageCalled">
+                    <desc>Function to register "OnResume" of the module UI (only as helper function).</desc>
+                    <return desc="Empty string (only needed to simplify binding)." multiplicity="1" name="empty" type="string"/>
+                </function>
+                <function name="getParameterList">
+                    <desc>Provide list of available parameters.</desc>
+                    <return desc="List of identification names of the available parameters." multiplicity="1" name="list" type="string"/>
+                </function>
+                <function name="removeParameter">
+                    <desc>Delete parameter of current parameter set by identification name.</desc>
+                    <param desc="Identification name" multiplicity="1" name="name" type="string"/>
+                </function>
+                <function name="createNewDataSet">
+                    <desc>Create new CSK_PersistentData dataset.</desc>
+                </function>
+                <function name="setModuleParameterName">
+                    <desc>Set parameter name for a module.</desc>
+                    <param desc="Module to save the parameter name for." multiplicity="1" name="module" type="string"/>
+                    <param desc="Name of the parameter dataset." multiplicity="1" name="name" type="string"/>
+                    <param desc="Status if parameter should be loaded on device / app reboot." multiplicity="1" name="loadOnReboot" type="bool"/>
+                    <param desc="Number of instance (for multi modules only)." multiplicity="?" name="instance" type="string"/>
+                    <param desc="Amount of total available instances." multiplicity="?" name="totalInstances" type="int"/>
+                </function>
+                <function name="getModuleParameterName">
+                    <desc>Function to get parameter. Can be used by other modules to receive their parameters.</desc>
+                    <param desc="Module to get name of parameters dataset to use." multiplicity="1" name="module" type="string"/>
+                    <param desc="Number of instance (for multi modules only)." multiplicity="?" name="instance" type="string"/>
+                    <return desc="Name of the dataset to use." multiplicity="?" name="name" type="string"/>
+                    <return desc="Status if parameter should be loaded on device / app reboot." multiplicity="?" name="loadOnReboot" type="bool"/>
+                    <return desc="Number of amount of available instances." multiplicity="?" name="totalInstances" type="int"/>
+                </function>
+                <function name="setSelectedParameterName">
+                    <desc>Select dataset to list its parameters.</desc>
+                    <param desc="Parameter dataset to list" multiplicity="?" name="selection" type="string"/>
+                </function>
+                <function name="removeParameterViaUI">
+                    <desc>Remove selected parameter dataset via UI.</desc>
+                </function>
+                <function name="overwriteData">
+                    <desc>Function to overwrite current parameters by uploaded parameters.</desc>
+                </function>
+                <function name="fileUploadFinished">
+                    <desc>Check if upload transfer was succesfull.</desc>
+                    <param desc="Status of file transfer" multiplicity="1" name="status" type="bool"/>
+                </function>
+            </serves>
+        </crown>
+        <crown name="CSK_CameraSetupTemplate">
+            <trait>released</trait>
+            <desc>CSK Template to show how CSK modules can be used to provide basic features for RemoteCamera setup. +
+Please have a look into the documentation of the used CSK modules. +
+It is possible to trigger a defaul setup via a button on the UI. +
+It will try power S1/S2 connectors and expects the cameras configured with IP 192.168.1.100 / 192.168.2.100 connected to ETH1/ETH2. +
+If succesfull it will show the incoming images on the UI. +
+{empty} +
+Concerning required CSK modules to run this application, please refer to the README within GIT.</desc>
+            <serves>
+                <event name="OnNewStatusLoadParameterOnReboot">
+                    <desc>Notify status if parameters should be loaded on app/device boot up.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnPersistentDataModuleAvailable">
+                    <desc>Notify status if features of CSK_PersistendData module are available.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnDataLoadedOnReboot">
+                    <desc>Event to call if module tried to load parameters and should be ready.</desc>
+                </event>
+                <event name="OnNewParameterName">
+                    <desc>Notify name of persistent data parameter.</desc>
+                    <param desc="Parameter name" multiplicity="1" name="name" type="string"/>
+                </event>
+                <event name="OnUserLevelOperatorActive">
+                    <desc>Status of Operator userlevel. Used internally in combination with the CSK_UserManagement module if available.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnUserLevelMaintenanceActive">
+                    <desc>Status of Maintenance userlevel. Used internally in combination with the CSK_UserManagement module if available.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnUserLevelServiceActive">
+                    <desc>Status of Service userlevel. Used internally in combination with the CSK_UserManagement module if available.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnUserLevelAdminActive">
+                    <desc>Status of Admin userlevel. Used internally in combination with the CSK_UserManagement module if available.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnNewStatusWaitingForSetup">
+                    <desc>Notify if currently waiting for camera setup.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <function name="setParameterName">
+                    <desc>Function to set the name of the parameters if saved/loaded via the CSK_PersistentData module.</desc>
+                    <param desc="Name of the parameter." multiplicity="1" name="name" type="string"/>
+                </function>
+                <function name="sendParameters">
+                    <desc>Send parameters to CSK_PersistentData module if possible to save them.</desc>
+                </function>
+                <function name="loadParameters">
+                    <desc>Load parameters for this module from the CSK_PersistentData module if possible and use them.</desc>
+                </function>
+                <function name="setLoadOnReboot">
+                    <desc>Configure if this module should load its saved parameters at app/device boot up.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </function>
+                <function name="pageCalled">
+                    <desc>Function to register "OnResume" of the module UI (only as helper function).</desc>
+                    <return desc="Empty string (only needed to simplify binding)." multiplicity="1" name="empty" type="string"/>
+                </function>
+                <function name="loadDefaultSetup">
+                    <desc>Function to load default camera setup config: +
+Camera powered on S1/S2 and connected to ETH1 / ETH2 with IPs 192.168.1.100 / 192.168.2.100</desc>
+                </function>
+            </serves>
+        </crown>
+        <meta key="author">SICK AG</meta>
+        <meta key="version">1.2.0</meta>
+        <meta key="priority">low</meta>
+        <meta key="copy-protected">false</meta>
+        <meta key="read-protected">false</meta>
+        <meta key="LuaLoadAllEngineAPI">false</meta>
+        <entry default="CSK_Template_CameraSetupMerged.lua" path="scripts"/>
+    </application>
+</manifest>

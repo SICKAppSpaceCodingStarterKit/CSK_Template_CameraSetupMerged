@@ -1,0 +1,126 @@
+<layout-row id="RowLayout1">
+	<stacked-view id="SV_Login" style="flex-grow: 1">
+		<stacked-pane id="SP_LoginOK" value="true" style="flex-grow: 1">
+			<layout-row id="RowLayout4">
+				<layout-column id="ColumnLayout1" style="align-items: stretch">
+					<layout-row id="RowLayout2" style="justify-content: space-between">
+						<layout-column id="ColumnLayout2" style="align-items: stretch">
+							<davinci-value-display id="VD_SelectedGigEParameter"
+								label="Selected parameter:">
+								<crown-edpws-binding property="value"
+									name="CSK_MultiRemoteCamera/OnNewGigEVisionCurrentParameter"
+									update-on-resume>
+								</crown-edpws-binding>
+							</davinci-value-display>
+						</layout-column>
+						<layout-column id="ColumnLayout4" style="align-items: stretch">
+							<davinci-value-display id="VD_gigEParameterType"
+								label="ParameterType">
+								<crown-edpws-binding property="value"
+									name="CSK_MultiRemoteCamera/OnNewGigEVisionParameterType"
+									update-on-resume>
+								</crown-edpws-binding>
+							</davinci-value-display>
+						</layout-column>
+						<layout-column id="ColumnLayout3" style="align-items: stretch">
+							<davinci-text-field id="TF_GigEParameterValue" type="text">
+								<crown-edpws-binding property="value"
+									name="CSK_MultiRemoteCamera/OnNewGigEVisionValue"
+									update-on-resume>
+								</crown-edpws-binding>
+								<crown-binding event="change"
+									name="CSK_MultiRemoteCamera/setGigEVisionParameterValue"
+									path="param/args/value" auto-commit>
+								</crown-binding>
+							</davinci-text-field>
+						</layout-column>
+						<layout-column id="ColumnLayout6" style="align-items: stretch">
+							<davinci-button id="Button_AddConfig" type="primary"
+								icon-position="append">
+								<span>Add config</span>
+								<crown-binding event="submit"
+									name="CSK_MultiRemoteCamera/addGigEVisionConfig" auto-commit>
+								</crown-binding>
+							</davinci-button>
+						</layout-column>
+					</layout-row>
+					<layout-row id="RowLayout3">
+						<layout-column id="ColumnLayout5"
+							class="myCustomMaxWidth1600px_CSK_Module_MultiRemoteCamera"
+							style="align-items: stretch">
+							<curie-table id="DT_GigEVisionParameters"
+								class="myCustomMaxHeight500px_CSK_Module_MultiRemoteCamera"
+								selectable select-mode="highlight_row">
+								<curie-table-column id="ParameterName" header="ParameterName">
+								</curie-table-column>
+								<curie-table-column id="Type" header="Type">
+								</curie-table-column>
+								<curie-table-column id="Access" header="Access">
+								</curie-table-column>
+								<curie-table-column id="Value" header="Value">
+								</curie-table-column>
+								<crown-edpws-binding property="data"
+									name="CSK_MultiRemoteCamera/OnNewGigEVisionTableContent"
+									update-on-resume>
+								</crown-edpws-binding>
+								<crown-binding event="row-selected"
+									name="CSK_MultiRemoteCamera/selectGigEVisionParameterNameViaUITable"
+									path="param/args/selection" auto-commit>
+								</crown-binding>
+							</curie-table>
+							<curie-table id="DT_CustomGigEParameterValues"
+								class="myCustomMaxHeight500px_CSK_Module_MultiRemoteCamera"
+								selectable select-mode="highlight_row">
+								<curie-table-column id="No" header="No"></curie-table-column>
+								<curie-table-column id="ParameterNameToConfig" header="ParameterName">
+								</curie-table-column>
+								<curie-table-column id="ValueToConfig" header="Value">
+								</curie-table-column>
+								<crown-edpws-binding property="data"
+									name="CSK_MultiRemoteCamera/OnNewGigEVisionConfigTableContent"
+									update-on-resume>
+								</crown-edpws-binding>
+								<crown-binding event="row-selected"
+									name="CSK_MultiRemoteCamera/selectGigEVisionConfigViaUITable"
+									path="param/args/selection" auto-commit>
+								</crown-binding>
+							</curie-table>
+						</layout-column>
+					</layout-row>
+					<davinci-button id="Button3" type="primary" icon-position="append">
+						<span>Remove</span>
+						<crown-binding event="submit"
+							name="CSK_MultiRemoteCamera/removeGigEVisionConfig" auto-commit>
+						</crown-binding>
+					</davinci-button>
+					<davinci-button id="Button2" type="primary" icon-position="append">
+						<span>Update config</span>
+						<crown-binding event="submit"
+							name="CSK_MultiRemoteCamera/updateConfig" auto-commit>
+						</crown-binding>
+					</davinci-button>
+					<stacked-view id="SV_PageCalled">
+						<crown-binding property="value"
+							name="CSK_MultiRemoteCamera/pageCalled"
+							path="result/data/emptyString" auto-update="0" update-on-resume>
+						</crown-binding>
+					</stacked-view>
+				</layout-column>
+			</layout-row>
+		</stacked-pane>
+		<stacked-pane id="SP_NotLoggedIn" value="false">
+			<layout-row id="RowLayout5">
+				<davinci-callout id="Callout1" type="warning">
+					<span>
+						Please login with user level Service to see this page.
+					</span>
+				</davinci-callout>
+			</layout-row>
+		</stacked-pane>
+		<crown-on property="value"
+			crown-event="CSK_MultiRemoteCamera/OnUserLevelServiceActive"
+			converter="function(value) {return value.toString();}">
+		</crown-on>
+	</stacked-view>
+  
+</layout-row>

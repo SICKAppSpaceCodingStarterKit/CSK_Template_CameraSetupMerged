@@ -1,0 +1,338 @@
+<layout-row id="RowLayout1" style="align-items: stretch">
+	<layout-column id="ColumnLayout3"
+		style="justify-content: space-between; align-items: stretch">
+		<davinci-value-display id="VD_Setup" label="Setup:">
+		</davinci-value-display>
+		<stacked-view id="SV_Login">
+			<stacked-pane id="SP_LoggedIn" value="true">
+				<layout-row id="RowLayout5">
+					<layout-column id="ColumnLayout10"
+						class="myCustomFrame_CSK_Module_Logger"
+						style="align-items: stretch">
+						<layout-row id="RowLayout6" style="align-items: flex-end">
+							<layout-column id="ColumnLayout1" style="align-items: stretch">
+								<davinci-drop-down id="DD_LogLevel" label="Log level:"
+									title="Set level of log messages to consider for the logger.">
+									<davinci-option id="Option1" value="ALL">
+										<span>ALL</span>
+									</davinci-option>
+									<crown-edpws-binding property="value" name="CSK_Logger/OnNewLogLevel"
+										update-on-resume>
+									</crown-edpws-binding>
+									<crown-binding event="change" name="CSK_Logger/setLogLevel"
+										path="param/args/level" auto-commit>
+									</crown-binding>
+									<davinci-option id="Option2" value="INFO">
+										<span>INFO</span>
+									</davinci-option>
+									<davinci-option id="Option5" value="WARNING">
+										<span>WARNING</span>
+									</davinci-option>
+									<davinci-option id="Option4" value="SEVERE">
+										<span>SEVERE</span>
+									</davinci-option>
+									<davinci-option id="Option3" value="OFF">
+										<span>OFF</span>
+									</davinci-option>
+								</davinci-drop-down>
+							</layout-column>
+							<layout-column id="ColumnLayout8" style="align-items: stretch">
+							</layout-column>
+							<layout-column id="ColumnLayout9" style="align-items: stretch">
+							</layout-column>
+							<layout-column id="ColumnLayout20" style="align-items: stretch">
+							</layout-column>
+						</layout-row>
+						<layout-row id="RowLayout8" style="align-items: stretch">
+							<layout-column id="ColumnLayout6" style="align-items: stretch">
+								<davinci-value-display id="VD_FileSink" value="File Sink Active:">
+								</davinci-value-display>
+								<layout-row id="RowLayout10" class="myMinHeightpx_CSK_Module_Logger"
+									style="align-items: stretch">
+								</layout-row>
+								<layout-row id="RowLayout9">
+									<layout-column id="ColumnLayout19" style="align-items: center">
+										<davinci-toggle-switch id="TS_FileSink"
+											title="Store log messages within configured file.">
+											<crown-edpws-binding property="checked"
+												name="CSK_Logger/OnNewStatusFileSinkActive" update-on-resume>
+											</crown-edpws-binding>
+											<crown-binding event="change" name="CSK_Logger/setFileSinkActive"
+												path="param/args/status" auto-commit>
+											</crown-binding>
+										</davinci-toggle-switch>
+										<davinci-collapse id="Collapse_FileSinkInfo" collapsed-title="Info"
+											expanded-title="Hide">
+											<davinci-callout id="Callout3" type="info">
+												<span>
+												If using the 'file sink' feature, a SD card should be used to reduce write accesses on the internal flash storage of the device.
+												</span>
+											</davinci-callout>
+										</davinci-collapse>
+									</layout-column>
+								</layout-row>
+							</layout-column>
+							<layout-column id="ColumnLayout11" style="align-items: stretch">
+								<davinci-value-display id="VD_Filepath"
+									title="Path of the logging file." value="File path:">
+								</davinci-value-display>
+								<davinci-text-field id="TF_Filepath" type="text"
+									title="Path of the logging file.">
+									<crown-edpws-binding property="value" name="CSK_Logger/OnNewFilepath"
+										update-on-resume>
+									</crown-edpws-binding>
+									<crown-binding event="change" name="CSK_Logger/setFilePath"
+										path="param/args/path" auto-commit>
+									</crown-binding>
+								</davinci-text-field>
+							</layout-column>
+							<layout-column id="ColumnLayout13" style="align-items: stretch">
+								<davinci-value-display id="VD_Filename"
+									title="Name of the log file to store log mesasgs."
+									value="File name:">
+								</davinci-value-display>
+								<davinci-text-field id="TF_Filename" type="text"
+									title="Name of the log file to store log mesasgs.">
+									<crown-edpws-binding property="value" name="CSK_Logger/OnNewFilename"
+										update-on-resume>
+									</crown-edpws-binding>
+									<crown-binding event="change" name="CSK_Logger/setFileName"
+										path="param/args/name" auto-commit>
+									</crown-binding>
+								</davinci-text-field>
+							</layout-column>
+							<layout-column id="ColumnLayout12" style="align-items: stretch">
+								<davinci-value-display id="VD_LogfileSize" value="Filesize:"
+									title="Maximum size of the log file in bytes before truncating. Has to be in the range [1024,104857600] bytes.">
+								</davinci-value-display>
+								<davinci-numeric-field id="NF_LogfileSize" type="outline" min="1024"
+									max="104857600" ticks="1" group-separator=","
+									decimal-separator="." format-pattern="0"
+									title="Maximum size of the log file in bytes before truncating. Has to be in the range [1024,104857600] bytes.">
+									<crown-edpws-binding property="value"
+										name="CSK_Logger/OnNewLogfileSize" update-on-resume>
+									</crown-edpws-binding>
+									<crown-binding event="change" name="CSK_Logger/setLogFileSize"
+										path="param/args/size" auto-commit>
+									</crown-binding>
+								</davinci-numeric-field>
+							</layout-column>
+						</layout-row>
+						<layout-row id="RowLayout4" style="align-items: stretch">
+							<layout-column id="ColumnLayout5" style="align-items: stretch">
+								<davinci-value-display id="VD_ConsoleSink" value="Console Sink:">
+								</davinci-value-display>
+								<davinci-toggle-switch id="TS_ConsoleSink"
+									title="Enables/disables forwarding to AppStudio console."
+									style="align-self: center">
+									<crown-edpws-binding property="checked"
+										name="CSK_Logger/OnNewStatusConsoleSink" update-on-resume>
+									</crown-edpws-binding>
+									<crown-binding event="change" name="CSK_Logger/setConsoleSinkEnabled"
+										path="param/args/status" auto-commit>
+									</crown-binding>
+								</davinci-toggle-switch>
+							</layout-column>
+							<layout-column id="ColumnLayout7" style="align-items: stretch">
+								<davinci-value-display id="VD_EngineLogger"
+									value="Attach to Engine logger:">
+								</davinci-value-display>
+								<davinci-toggle-switch id="TS_EngineLogger"
+									title="Attach to the engine logger to log internal engine messages."
+									style="align-self: center">
+									<crown-edpws-binding property="checked"
+										name="CSK_Logger/OnNewStatusAttachedToEngineLogger"
+										update-on-resume>
+									</crown-edpws-binding>
+									<crown-binding event="change"
+										name="CSK_Logger/setAttachToEngineLogger" path="param/args/status"
+										auto-commit>
+									</crown-binding>
+								</davinci-toggle-switch>
+							</layout-column>
+							<layout-column id="ColumnLayout16" style="align-items: stretch">
+								<davinci-value-display id="VD_CallbackSink"
+									value="Internal log handling:"
+									title="Process incoming log messages. It can make sense to set it to FALSE if e.g. 'FileSink' is active as this will reduce the internal needed processing load to only focus on the FileSink, but then no log messages will be forwarded via 'OnNewMessage'-event or shown in UI by this module.">
+								</davinci-value-display>
+								<davinci-toggle-switch id="TS_CallbackSink"
+									title="Process incoming log messages. It can make sense to set it to FALSE if e.g. 'FileSink' is active as this will reduce the internal needed processing load to only focus on the FileSink, but then no log messages will be forwarded via 'OnNewMessage'-event or shown in UI by this module."
+									style="align-self: center">
+									<crown-edpws-binding property="checked"
+										name="CSK_Logger/OnNewStatusCallbackSink" update-on-resume>
+									</crown-edpws-binding>
+									<crown-binding event="change" name="CSK_Logger/setCallbackSinkActive"
+										path="param/args/status" auto-commit>
+									</crown-binding>
+								</davinci-toggle-switch>
+							</layout-column>
+							<layout-column id="ColumnLayout18" style="align-items: stretch">
+							</layout-column>
+						</layout-row>
+						<layout-row id="RowLayout7" class="myMinHeightpx_CSK_Module_Logger">
+						</layout-row>
+					</layout-column>
+				</layout-row>
+			</stacked-pane>
+			<stacked-pane id="SP_NotLoggedIn" value="false">
+				<davinci-callout id="Callout1" type="info">
+					<span>Login via UserManagement to see setup options.</span>
+				</davinci-callout>
+			</stacked-pane>
+			<crown-edpws-binding property="value"
+				name="CSK_Logger/OnUserLevelMaintenanceActive" update-on-resume
+				converter="function(value) {return value.toString();}">
+			</crown-edpws-binding>
+		</stacked-view>
+		<davinci-value-display id="VD_LatestLogMessage"
+			label="Latest Log Message">
+		</davinci-value-display>
+		<davinci-text-area id="TA_LogMessage">
+			<crown-edpws-binding property="label" name="CSK_Logger/OnNewMessage"
+				update-on-resume>
+			</crown-edpws-binding>
+		</davinci-text-area>
+		<davinci-value-display id="VD_LogEntries" label="Log">
+		</davinci-value-display>
+		<layout-row id="RowLayout2" style="flex-grow: 2">
+			<davinci-text-area id="TA_LogEntries"
+				style="width: 100%; height: 100%; align-self: stretch">
+				<crown-edpws-binding property="value"
+					name="CSK_Logger/OnNewCompleteLogfile" update-on-resume>
+				</crown-edpws-binding>
+			</davinci-text-area>
+		</layout-row>
+		<layout-row id="RowLayout3" class="myMargin20px0_CSK_Module_Logger"
+			style="justify-content: space-between">
+			<layout-column id="ColumnLayout14" style="align-items: stretch">
+				<appspace-file-download-button id="FDB_DownloadFile" type="primary"
+					icon-position="append" downloaded-filename="file.tmp"
+					title="Download Logfile from device to the pc.">
+					<crown-on property="downloaded-filename"
+						crown-event="CSK_Logger/OnNewFilename">
+					</crown-on>
+					<span>Download Logfile</span>
+					<crown-on property="file-path"
+						crown-event="CSK_Logger/OnNewFullFilePath">
+					</crown-on>
+				</appspace-file-download-button>
+			</layout-column>
+			<layout-column id="ColumnLayout17" style="align-items: stretch">
+			</layout-column>
+			<layout-column id="ColumnLayout15" style="align-items: stretch">
+				<davinci-button id="Button_ReloadLog" type="primary"
+					icon-position="append">
+					<span>Reload Logfile</span>
+					<crown-binding event="submit" name="CSK_Logger/reloadLogsInUI"
+						auto-commit>
+					</crown-binding>
+				</davinci-button>
+			</layout-column>
+		</layout-row>
+		<stacked-view id="SV_Login2">
+			<stacked-pane id="SP_LoggedIn2" value="true">
+				<layout-column id="Column_PersistentData"
+					class="myCustomFrame_CSK_Module_Logger"
+					style="align-items: stretch">
+					<davinci-value-display id="VD_PersistentData" value=""
+						label="PersistentData Setup:"
+						title="CSK_PersistentData related setup if module is available.">
+					</davinci-value-display>
+					<layout-row id="RowLayout41"
+						style="justify-content: space-between; align-items: center">
+						<layout-column id="ColumnLayout51" style="align-items: stretch">
+							<davinci-value-display id="VD_ParameterName" value="Parameter name:"
+								title="Name of the parameters within the CSK_PersistentData module to be uses for this module.">
+							</davinci-value-display>
+						</layout-column>
+						<layout-column id="ColumnLayout62" style="align-items: stretch">
+							<davinci-text-field id="TF_ParameterName" type="text"
+								title="Name of the parameters within the CSK_PersistentData module to be uses for this module.">
+								<crown-edpws-binding property="value"
+									name="CSK_Logger/OnNewParameterName" update-on-resume>
+								</crown-edpws-binding>
+								<crown-binding event="change" name="CSK_Logger/setParameterName"
+									path="param/args/name" auto-commit>
+								</crown-binding>
+								<crown-edpws-binding property="disabled"
+									name="CSK_Logger/OnPersistentDataModuleAvailable" update-on-resume
+									converter="function(value) {return !value;}">
+								</crown-edpws-binding>
+							</davinci-text-field>
+						</layout-column>
+					</layout-row>
+					<layout-row id="RowLayout22"
+						style="justify-content: space-between; align-items: center">
+						<davinci-value-display id="VD_LoadConfig"
+							value="Load config on app start:"
+							title="Load configured parameters from CSK_PersistentData on app start.">
+						</davinci-value-display>
+						<davinci-checkbox id="CB_LoadConfig"
+							title="Load configured parameters from CSK_PersistentData on app start.">
+							<span></span>
+							<crown-edpws-binding property="checked"
+								name="CSK_Logger/OnNewStatusLoadParameterOnReboot"
+								update-on-resume>
+							</crown-edpws-binding>
+							<crown-edpws-binding property="disabled"
+								name="CSK_Logger/OnPersistentDataModuleAvailable" update-on-resume
+								converter="function(value) {return !value;}">
+							</crown-edpws-binding>
+							<crown-binding event="change" name="CSK_Logger/setLoadOnReboot"
+								path="param/args/status" auto-commit>
+							</crown-binding>
+						</davinci-checkbox>
+					</layout-row>
+					<layout-row id="RowLayout23">
+						<layout-column id="ColumnLayout23" style="align-items: stretch">
+							<davinci-button id="B_LoadConfig" type="primary"
+								icon-position="append"
+								title="Load configured parameters from CSK_PersistentData module.">
+								<span>Load Config</span>
+								<crown-binding event="submit" name="CSK_Logger/loadParameters"
+									auto-commit>
+								</crown-binding>
+								<crown-edpws-binding property="disabled"
+									name="CSK_Logger/OnPersistentDataModuleAvailable" update-on-resume
+									converter="function(value) {return !value;}">
+								</crown-edpws-binding>
+							</davinci-button>
+						</layout-column>
+						<layout-column id="ColumnLayout4" style="align-items: stretch">
+							<davinci-button id="B_SaveConfig" type="primary"
+								icon-position="append"
+								title="Save current configured parameters of this module within CSK_PersistentData module.">
+								<span>Save Config</span>
+								<crown-binding event="submit" name="CSK_Logger/sendParameters"
+									auto-commit>
+								</crown-binding>
+								<crown-edpws-binding property="disabled"
+									name="CSK_Logger/OnPersistentDataModuleAvailable" update-on-resume
+									converter="function(value) {return !value;}">
+								</crown-edpws-binding>
+							</davinci-button>
+						</layout-column>
+					</layout-row>
+				</layout-column>
+			</stacked-pane>
+			<stacked-pane id="SP_NotLoggedIn2" value="false">
+				<davinci-callout id="Callout2" type="info">
+					<span>
+						Login via UserManagement to see parameter setup options (minimum "Maintenance"-user level).
+					</span>
+				</davinci-callout>
+			</stacked-pane>
+			<crown-edpws-binding property="value"
+				name="CSK_Logger/OnUserLevelMaintenanceActive" update-on-resume
+				converter="function(value) {return value.toString();}">
+			</crown-edpws-binding>
+		</stacked-view>
+		<stacked-view id="SV_PageCalled">
+			<crown-binding property="value" name="CSK_Logger/pageCalled"
+				path="result/data/empty" auto-update="0" update-on-resume>
+			</crown-binding>
+		</stacked-view>
+	</layout-column>
+	<layout-column id="ColumnLayout2" style="align-items: stretch">
+	</layout-column>
+</layout-row>

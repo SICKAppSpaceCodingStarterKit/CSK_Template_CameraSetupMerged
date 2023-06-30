@@ -1,0 +1,965 @@
+<layout-row id="RowLayout1"
+	style="align-items: stretch; flex-shrink: 0">
+	<layout-column id="ColumnLayout1"
+		style="align-items: stretch; flex-grow: 2">
+		<stacked-view id="SV_LoginInfo">
+			<stacked-pane id="SP_NotLoggedIn0" value="false">
+				<davinci-callout id="Callout4" type="info">
+					<span>
+						Some features are only usable / visible when logged in via UserManagement
+					</span>
+				</davinci-callout>
+			</stacked-pane>
+			<stacked-pane id="SP_LoggedIn" value="true"></stacked-pane>
+			<crown-edpws-binding property="value"
+				name="CSK_MultiRemoteCamera/OnUserLevelOperatorActive"
+				update-on-resume
+				converter="function(value) {return value.toString();}">
+			</crown-edpws-binding>
+		</stacked-view>
+		<stacked-view id="SV_CameraSetup">
+			<stacked-pane id="SP_WaitForPower" value="true">
+				<davinci-callout id="Callout1" type="info">
+					<span>Currently waiting for camera boot up...</span>
+				</davinci-callout>
+			</stacked-pane>
+			<stacked-pane id="SP_Ready" value="false"></stacked-pane>
+			<crown-edpws-binding property="value"
+				name="CSK_MultiRemoteCamera/OnNewStatusWaitingForCameraBootUp"
+				update-on-resume
+				converter="function(value) {return value.toString();}">
+			</crown-edpws-binding>
+		</stacked-view>
+		<sick-viewer2d id="Viewer2D1"
+			class="myViewer_CSK_Module_MultiRemoteCamera"
+			viewer-id="multiRemoteCameraViewer1" protocol="auto"
+			style="width: 100%; height: 100%">
+		</sick-viewer2d>
+	</layout-column>
+	<layout-column id="ColumnLayout4" style="align-items: stretch">
+		<davinci-tabs id="T_Setup_Instances" type="modern">
+			<davinci-tab id="T_Setup" label="Settings">
+				<layout-column id="ColumnLayout2" style="align-items: stretch">
+					<layout-row id="RowLayout15"
+						style="justify-content: space-between; align-items: center">
+						<davinci-value-display id="VD_ViewerActive" value="Viewer active:">
+						</davinci-value-display>
+						<davinci-toggle-switch id="TS_ViewerActive" tabindex="0">
+							<crown-binding event="change"
+								name="CSK_MultiRemoteCamera/setViewerActive"
+								path="param/args/status" auto-commit>
+							</crown-binding>
+							<crown-edpws-binding property="checked"
+								name="CSK_MultiRemoteCamera/OnNewStatusViewerActive"
+								update-on-resume>
+							</crown-edpws-binding>
+						</davinci-toggle-switch>
+					</layout-row>
+					<davinci-callout id="C_ViewerInfo" type="info">
+						<span>
+							This viewer will only work with ImageProcessingMode BOTH or SCRIPT
+						</span>
+					</davinci-callout>
+					<layout-row id="RowLayout17"
+						class="myCustomSpacerVert10_CSK_Module_MultiRemoteCamera">
+					</layout-row>
+					<layout-row id="RowLayout11"
+						style="justify-content: space-between; align-items: center">
+						<layout-column id="ColumnLayout23" style="align-items: stretch">
+							<davinci-value-display id="VD_SelecteCamera" value="Selected camera:">
+							</davinci-value-display>
+						</layout-column>
+						<layout-column id="ColumnLayout22" style="align-items: stretch">
+							<davinci-drop-down id="DD_CameraInstance">
+								<crown-binding event="change"
+									name="CSK_MultiRemoteCamera/setSelectedCam"
+									path="param/args/camNo" auto-commit
+									converter="function(value) {return Number(value);}">
+								</crown-binding>
+								<crown-edpws-binding property="value"
+									name="CSK_MultiRemoteCamera/OnNewSelectedCam" update-on-resume
+									converter="function(value) {return value.toString();}">
+								</crown-edpws-binding>
+								<crown-edpws-binding property="data"
+									name="CSK_MultiRemoteCamera/OnNewCameraList" update-on-resume
+									converter="convertToList">
+								</crown-edpws-binding>
+							</davinci-drop-down>
+						</layout-column>
+					</layout-row>
+					<stacked-view id="SV_LoginCameraIPSetting">
+						<stacked-pane id="SP_LoginOK" value="true">
+							<layout-column id="ColumnLayout47" style="align-items: stretch">
+								<layout-row id="RowLayout2"
+									style="justify-content: space-between; align-items: center">
+									<layout-column id="ColumnLayout25" style="align-items: stretch">
+										<davinci-value-display id="VD_CameraIP" value="Camera IP address:">
+										</davinci-value-display>
+									</layout-column>
+									<layout-column id="ColumnLayout27" style="align-items: stretch">
+										<davinci-text-field id="TF_CameraIP" type="text">
+											<crown-binding event="change" name="CSK_MultiRemoteCamera/setCameraIP"
+												path="param/args/ip" auto-commit>
+											</crown-binding>
+											<crown-edpws-binding property="value"
+												name="CSK_MultiRemoteCamera/OnCurrentCameraIP" update-on-resume>
+											</crown-edpws-binding>
+											<crown-on property="disabled"
+												crown-event="CSK_MultiRemoteCamera/OnUserLevelOperatorActive"
+												converter="function(value) {return !value;}">
+											</crown-on>
+										</davinci-text-field>
+									</layout-column>
+								</layout-row>
+							</layout-column>
+						</stacked-pane>
+						<stacked-pane id="SP_LoginNotCorrect" value="false">
+						</stacked-pane>
+						<crown-on property="value"
+							crown-event="CSK_MultiRemoteCamera/OnUserLevelMaintenanceActive">
+						</crown-on>
+					</stacked-view>
+					<layout-row id="RowLayout16"
+						class="myCustomSpacerVert10_CSK_Module_MultiRemoteCamera">
+					</layout-row>
+					<stacked-view id="SV_LoginCameraSetup">
+						<stacked-pane id="SP_LoginOK1" value="true">
+							<layout-column id="ColumnLayout9" style="align-items: stretch">
+								<layout-row id="RowLayout4"
+									style="justify-content: space-between; align-items: center">
+									<davinci-value-display id="VD_GigEVision" value="GigEVision:">
+									</davinci-value-display>
+									<davinci-toggle-switch id="TS_GigEVision" tabindex="0">
+										<crown-edpws-binding property="checked"
+											name="CSK_MultiRemoteCamera/OnNewGigEVisionStatus"
+											update-on-resume>
+										</crown-edpws-binding>
+										<crown-binding event="change"
+											name="CSK_MultiRemoteCamera/setGigEVision"
+											path="param/args/status" auto-commit>
+										</crown-binding>
+									</davinci-toggle-switch>
+								</layout-row>
+								<stacked-view id="SV_GigEVision">
+									<stacked-pane id="SP_GigEVision" value="true">
+										<layout-column id="ColumnLayout48" style="align-items: stretch">
+											<layout-row id="RowLayout6"
+												style="align-items: center; justify-content: space-between">
+												<layout-column id="ColumnLayout40">
+												<davinci-value-display id="VD_CameraModel" value="Camera Model:">
+												</davinci-value-display>
+												</layout-column>
+												<layout-column id="ColumnLayout41" style="align-items: stretch">
+												<davinci-drop-down id="DD_CameraModel">
+												<davinci-option id="Option1" value="PicoMidiCam2">
+												<span>SICK Pico/MidiCam2</span>
+												</davinci-option>
+												<davinci-option id="Option2" value="a2A1920-51gcBAS">
+												<span>Basler a2A1920-51gc</span>
+												</davinci-option>
+												<crown-on property="value"
+													crown-event="CSK_MultiRemoteCamera/OnNewCameraModel">
+												</crown-on>
+												<crown-set event="change"
+													crown-function="CSK_MultiRemoteCamera/setCameraModel"
+													protocol="crownMSGPACK" crown-path="camModel">
+												</crown-set>
+												</davinci-drop-down>
+												</layout-column>
+											</layout-row>
+											<davinci-link id="L_GigEVisionParameters" icon-position="append"
+												target="_blank"
+												href="/#!msdd=CSK_Template_CameraSetupMerged&page=Camera%2520GigE%2520Vision">
+												<span>GigE Vision parameters</span>
+											</davinci-link>
+										</layout-column>
+									</stacked-pane>
+									<crown-edpws-binding property="value"
+										name="CSK_MultiRemoteCamera/OnNewGigEVisionStatus"
+										update-on-resume>
+									</crown-edpws-binding>
+									<stacked-pane id="SP_NoGigEVIsion" value="false">
+									</stacked-pane>
+								</stacked-view>
+								<layout-row id="RowLayout29"
+									class="myCustomSpacerVert10_CSK_Module_MultiRemoteCamera">
+								</layout-row>
+								<layout-row id="RowLayout22"
+									style="justify-content: space-between; align-items: center">
+									<davinci-value-display id="VD_SwitchMode"
+										value="Camera via switch mode:"
+										title="Use this mode if multiple cameras are connected via a switch to the device to manage package traffic.">
+									</davinci-value-display>
+									<davinci-toggle-switch id="TS_SwitchMode" tabindex="0"
+										title="Use this mode if multiple cameras are connected via a switch to the device to manage package traffic.">
+										<crown-set event="change"
+											crown-function="CSK_MultiRemoteCamera/setSwitchMode"
+											protocol="crownMSGPACK" crown-path="status">
+										</crown-set>
+										<crown-edpws-binding property="checked"
+											name="CSK_MultiRemoteCamera/OnNewSwitchMode" update-on-resume>
+										</crown-edpws-binding>
+									</davinci-toggle-switch>
+								</layout-row>
+								<layout-row id="RowLayout27"
+									class="myCustomSpacerVert10_CSK_Module_MultiRemoteCamera">
+								</layout-row>
+								<layout-row id="RowLayout28"
+									style="justify-content: space-between; align-items: center">
+									<davinci-value-display id="VD_MonitorCameras"
+										value="Monitor camera (heartbeats every 30 sec):">
+									</davinci-value-display>
+									<stacked-view id="SV_CameraMonitor">
+										<stacked-pane id="SP_MonitoringActive" value="true">
+											<davinci-status-indicator id="SI_CameraMonitor">
+												<span></span>
+												<crown-edpws-binding property="status"
+													name="CSK_MultiRemoteCamera/OnNewMonitoringState"
+													update-on-resume>
+												</crown-edpws-binding>
+											</davinci-status-indicator>
+										</stacked-pane>
+										<stacked-pane id="SP_MonitorNotActive" value="false">
+										</stacked-pane>
+										<crown-edpws-binding property="value"
+											name="CSK_MultiRemoteCamera/OnNewMonitoring" update-on-resume
+											converter="function(value) {return value.toString();}">
+										</crown-edpws-binding>
+									</stacked-view>
+									<davinci-toggle-switch id="TS_CameraMonitoring" tabindex="0">
+										<crown-set event="change"
+											crown-function="CSK_MultiRemoteCamera/setCameraMonitoring"
+											protocol="crownMSGPACK" crown-path="state">
+										</crown-set>
+										<crown-edpws-binding property="checked"
+											name="CSK_MultiRemoteCamera/OnNewMonitoring" update-on-resume>
+										</crown-edpws-binding>
+									</davinci-toggle-switch>
+								</layout-row>
+								<layout-column id="ColumnLayout36" style="align-items: stretch">
+								</layout-column>
+							</layout-column>
+						</stacked-pane>
+						<crown-on property="value"
+							crown-event="CSK_MultiRemoteCamera/OnUserLevelMaintenanceActive"
+							converter="function(value) {return value.toString();}">
+						</crown-on>
+						<stacked-pane id="SP_LoginNotCorrect1" value="false">
+						</stacked-pane>
+					</stacked-view>
+					<stacked-view id="SV_CameraConnected" style="align-self: stretch">
+						<stacked-pane id="SP_CameraConnected" value="true"
+							style="flex-grow: 1; flex-shrink: 0">
+							<layout-column id="ColumnLayout35" style="align-items: stretch">
+								<davinci-button id="B_DisconnectCamera" type="primary"
+									icon-position="append">
+									<span>Disconnect Camera</span>
+									<crown-set event="submit"
+										crown-function="CSK_MultiRemoteCamera/disconnectCamera"
+										protocol="crownMSGPACK">
+									</crown-set>
+								</davinci-button>
+								<davinci-status-indicator id="SI_CameraConnected"
+									class="myCustomCircle_CSK_Module_MultiRemoteCamera">
+									<span></span>
+									<crown-edpws-binding property="status"
+										name="CSK_MultiRemoteCamera/OnCameraConnected" update-on-resume>
+									</crown-edpws-binding>
+								</davinci-status-indicator>
+							</layout-column>
+						</stacked-pane>
+						<stacked-pane id="SP_CameraNotConnected" value="false"
+							style="flex-grow: 1; flex-shrink: 0">
+							<layout-column id="ColumnLayout34" style="align-items: stretch">
+								<davinci-button id="B_ConnectCamera" type="primary"
+									icon-position="append">
+									<span>Connect camera</span>
+									<crown-binding event="submit"
+										name="CSK_MultiRemoteCamera/connectCamera" auto-commit>
+									</crown-binding>
+									<crown-edpws-binding property="disabled"
+										name="CSK_MultiRemoteCamera/OnScanCamera" update-on-resume>
+									</crown-edpws-binding>
+								</davinci-button>
+								<davinci-status-indicator id="SI_CameraNotConnected"
+									class="myCustomCircle_CSK_Module_MultiRemoteCamera">
+									<span></span>
+									<crown-edpws-binding property="status"
+										name="CSK_MultiRemoteCamera/OnCameraConnected" update-on-resume>
+									</crown-edpws-binding>
+								</davinci-status-indicator>
+							</layout-column>
+						</stacked-pane>
+						<crown-edpws-binding property="value"
+							name="CSK_MultiRemoteCamera/OnCameraConnected" update-on-resume
+							converter="function(value) {return value.toString();}">
+						</crown-edpws-binding>
+					</stacked-view>
+					<layout-row id="RowLayout9"
+						style="justify-content: space-between; align-items: center">
+					</layout-row>
+					<stacked-view id="SV_CameraScan">
+						<stacked-pane id="SP_CameraScanActvie" value="true">
+							<davinci-callout id="CO_CameraScan" type="info">
+								<span>Currently searching for connected camera...</span>
+							</davinci-callout>
+						</stacked-pane>
+						<stacked-pane id="SP_CameraScanNotActvie" value="false">
+						</stacked-pane>
+						<crown-edpws-binding property="value"
+							name="CSK_MultiRemoteCamera/OnScanCamera" update-on-resume
+							converter="function(value) {return value.toString();}">
+						</crown-edpws-binding>
+					</stacked-view>
+					<layout-row id="Spacer1"
+						class="myCustomSpacerVert10_CSK_Module_MultiRemoteCamera">
+					</layout-row>
+					<stacked-view id="SV_LoginCameraParameter">
+						<stacked-pane id="SP_LoginOK2" value="true">
+							<layout-column id="ColumnLayout37" style="align-items: stretch">
+								<davinci-value-display id="VD_CameraColorType" value="Camera type">
+								</davinci-value-display>
+								<davinci-drop-down id="DD_CameraColorType">
+									<davinci-option id="Option21" value="MONO8">
+										<span>MONO8</span>
+									</davinci-option>
+									<davinci-option id="Option22" value="COLOR8">
+										<span>COLOR8</span>
+									</davinci-option>
+									<davinci-option id="Option3" value="RAW8">
+										<span>RAW8</span>
+									</davinci-option>
+									<crown-edpws-binding property="value"
+										name="CSK_MultiRemoteCamera/OnNewColorMode" update-on-resume>
+									</crown-edpws-binding>
+									<crown-binding event="change"
+										name="CSK_MultiRemoteCamera/setColorMode" path="param/args/mode"
+										auto-commit>
+									</crown-binding>
+									<crown-edpws-binding property="disabled"
+										name="CSK_MultiRemoteCamera/OnNewGigEVisionStatus"
+										update-on-resume>
+									</crown-edpws-binding>
+								</davinci-drop-down>
+								<davinci-value-display id="VD_ProcessingMode"
+									value="ImageProcessing Mode"
+									title="Processing in this app or in a other app. Mode to use: 'SCRIPT' = Handle image only in this app // 'APP'= Forward incoming images as event, so that other apps/modules can handle them // 'BOTH'= 'SCRIPT'+'APP' (e.g. you want to process the image within the internal script but would like to show the image also in another app.)">
+								</davinci-value-display>
+								<davinci-drop-down id="DD_ProcessingMode"
+									title="Processing in this app or in a other app. Mode to use: 'SCRIPT' = Handle image only in this app // 'APP'= Forward incoming images as event, so that other apps/modules can handle them // 'BOTH'= 'SCRIPT'+'APP' (e.g. you want to process the image within the internal script but would like to show the image also in another app.)">
+									<davinci-option id="Option15" value="BOTH">
+										<span>BOTH (SCRIPT + APP)</span>
+									</davinci-option>
+									<davinci-option id="Option16" value="SCRIPT">
+										<span>SCRIPT (process only in module)</span>
+									</davinci-option>
+									<davinci-option id="Option17" value="APP">
+										<span>APP (only forward to other modules)</span>
+									</davinci-option>
+									<crown-edpws-binding property="value"
+										name="CSK_MultiRemoteCamera/OnNewProcessingMode" update-on-resume>
+									</crown-edpws-binding>
+									<crown-binding event="change"
+										name="CSK_MultiRemoteCamera/setProcessingMode"
+										path="param/args/mode" auto-commit>
+									</crown-binding>
+								</davinci-drop-down>
+								<davinci-value-display id="VD_TriggerMode" value="Trigger Mode">
+								</davinci-value-display>
+								<davinci-drop-down id="DD_TriggerMode">
+									<davinci-option id="Option24" value="SOFTWARE_TRIGGER">
+										<span>SW Trigger / Ethernet</span>
+									</davinci-option>
+									<davinci-option id="Option12" value="FIXED_FREQUENCY">
+										<span>Continuous Mode</span>
+									</davinci-option>
+									<davinci-option id="Option13" value="HARDWARE_TRIGGER">
+										<span>Digital Input</span>
+									</davinci-option>
+									<crown-binding event="change"
+										name="CSK_MultiRemoteCamera/setAcquisitionMode"
+										path="param/args/mode" auto-commit>
+									</crown-binding>
+									<crown-edpws-binding property="value"
+										name="CSK_MultiRemoteCamera/OnNewAcquisitionMode"
+										update-on-resume>
+									</crown-edpws-binding>
+								</davinci-drop-down>
+								<stacked-view id="SV_SW-Trigger">
+									<stacked-pane id="SP_SWTriggerActive" value="true">
+										<layout-column id="ColumnLayout8" style="align-items: stretch">
+											<davinci-button id="B_SWTrigger" type="primary" icon-position="append"
+												style="align-self: stretch">
+												<span>SW Image Trigger</span>
+												<crown-binding event="submit"
+													name="CSK_MultiRemoteCamera/cameraSoftwareTrigger" auto-commit>
+												</crown-binding>
+											</davinci-button>
+										</layout-column>
+									</stacked-pane>
+									<stacked-pane id="SP_NoSWTrigger" value="false">
+									</stacked-pane>
+									<crown-edpws-binding property="value"
+										name="CSK_MultiRemoteCamera/OnSWTriggerActive" update-on-resume
+										converter="function(value) {return value.toString();}">
+									</crown-edpws-binding>
+								</stacked-view>
+								<stacked-view id="SV_TriggerDelay">
+									<stacked-pane id="SP_DigitalTriggerActive" value="true">
+										<layout-column id="ColumnLayout17" style="align-items: stretch">
+											<davinci-button id="B_TriggerPause" type="primary"
+												icon-position="append">
+												<span>Trigger Pause</span>
+												<crown-binding event="submit"
+													name="CSK_MultiRemoteCamera/setDigitalTriggerPause" auto-commit>
+												</crown-binding>
+											</davinci-button>
+											<davinci-status-indicator id="SI_TriggerPause"
+												class="myCustomCircle_CSK_Module_MultiRemoteCamera">
+												<span></span>
+												<crown-edpws-binding property="status"
+													name="CSK_MultiRemoteCamera/OnNewStatusDigitalTriggerPause"
+													update-on-resume>
+												</crown-edpws-binding>
+											</davinci-status-indicator>
+										</layout-column>
+									</stacked-pane>
+									<stacked-pane id="SP_NoDigitalTrigger" value="false">
+									</stacked-pane>
+									<crown-edpws-binding property="value"
+										name="CSK_MultiRemoteCamera/OnHWTriggerActive" update-on-resume
+										converter="function(value) {return value.toString();}">
+									</crown-edpws-binding>
+								</stacked-view>
+								<layout-row id="RowLayout14"
+									class="myCustomFrame_CSK_Module_MultiRemoteCamera">
+									<davinci-value-display id="VD_FPS" value="FPS =">
+									</davinci-value-display>
+									<davinci-value-display id="VD_ValueFPS">
+										<crown-edpws-binding property="value"
+											name="CSK_MultiRemoteCamera/OnNewFPSCamera" update-on-resume>
+										</crown-edpws-binding>
+									</davinci-value-display>
+								</layout-row>
+								<layout-row id="RowLayout32"
+									class="myCustomFrame_CSK_Module_MultiRemoteCamera">
+									<davinci-value-display id="VD_ImageQueueSize"
+										value="Image queue size = ">
+									</davinci-value-display>
+									<davinci-value-display id="VD_ValueImageQueueSize">
+										<crown-edpws-binding property="value"
+											name="CSK_MultiRemoteCamera/OnNewImageQueueCamera"
+											update-on-resume>
+										</crown-edpws-binding>
+									</davinci-value-display>
+								</layout-row>
+							</layout-column>
+						</stacked-pane>
+						<crown-on property="value"
+							crown-event="CSK_MultiRemoteCamera/OnUserLevelMaintenanceActive"
+							converter="function(value) {return value.toString();}">
+						</crown-on>
+						<stacked-pane id="SP_NotLoggedIn" value="false"></stacked-pane>
+					</stacked-view>
+					<layout-row id="RowLayout8"
+						class="myCustomFrame_CSK_Module_MultiRemoteCamera">
+						<layout-column id="ColumnLayout16" style="align-items: stretch">
+							<davinci-value-display id="VD_ShutterTime" value="Shutter Time [µs]">
+							</davinci-value-display>
+							<davinci-numeric-field id="NF_ShutterTime" type="outline" min="100"
+								max="100000" ticks="10" group-separator="," decimal-separator="."
+								format-pattern="0" value="0">
+								<crown-binding event="change"
+									name="CSK_MultiRemoteCamera/setShutterTime"
+									path="param/args/shutterTime" auto-commit>
+								</crown-binding>
+								<crown-edpws-binding property="value"
+									name="CSK_MultiRemoteCamera/OnNewShutterTime" update-on-resume>
+								</crown-edpws-binding>
+								<crown-on property="disabled"
+									crown-event="CSK_MultiRemoteCamera/OnUserLevelOperatorActive"
+									converter="function(value) {return !value;}">
+								</crown-on>
+							</davinci-numeric-field>
+							<davinci-value-display id="VD_Framerate" value="Framerate [fps]">
+							</davinci-value-display>
+							<davinci-numeric-field id="NF_FrameRate" type="outline" min="1"
+								max="50" ticks="1" group-separator="," decimal-separator="."
+								format-pattern="0" value="1">
+								<crown-edpws-binding property="value"
+									name="CSK_MultiRemoteCamera/OnNewFramerate" update-on-resume>
+								</crown-edpws-binding>
+								<crown-binding event="change"
+									name="CSK_MultiRemoteCamera/setFramerate"
+									path="param/args/framerate" auto-commit>
+								</crown-binding>
+								<crown-on property="disabled"
+									crown-event="CSK_MultiRemoteCamera/OnUserLevelMaintenanceActive"
+									converter="function(value) {return !value;}">
+								</crown-on>
+							</davinci-numeric-field>
+							<davinci-value-display id="VD_Gain" value="Gain Factor">
+							</davinci-value-display>
+							<davinci-numeric-field id="NF_Gain" type="outline" min="1" max="100"
+								ticks="1" group-separator="," decimal-separator="."
+								format-pattern="0">
+								<crown-edpws-binding property="value"
+									name="CSK_MultiRemoteCamera/OnNewGain" update-on-resume>
+								</crown-edpws-binding>
+								<crown-binding event="change" name="CSK_MultiRemoteCamera/setGain"
+									path="param/args/gain" auto-commit>
+								</crown-binding>
+								<crown-on property="disabled"
+									crown-event="CSK_MultiRemoteCamera/OnUserLevelOperatorActive"
+									converter="function(value) {return !value;}">
+								</crown-on>
+							</davinci-numeric-field>
+							<davinci-value-display id="VD_VisFactor"
+								value="ImageProcessing Resolution Scale Factor"
+								title="Rescale image before further processing">
+							</davinci-value-display>
+							<davinci-numeric-field id="NF_VisFac" type="outline" min="0.1" max="1"
+								ticks="0.1" group-separator="," decimal-separator="."
+								format-pattern="0.0" value="0.5"
+								title="Rescale image before further processing">
+								<crown-edpws-binding property="value"
+									name="CSK_MultiRemoteCamera/OnNewResizeFactor" update-on-resume>
+								</crown-edpws-binding>
+								<crown-binding event="change"
+									name="CSK_MultiRemoteCamera/setResizeFactor"
+									path="param/args/factor" auto-commit>
+								</crown-binding>
+								<crown-on property="disabled"
+									crown-event="CSK_MultiRemoteCamera/OnUserLevelMaintenanceActive"
+									converter="function(value) {return !value;}">
+								</crown-on>
+							</davinci-numeric-field>
+						</layout-column>
+					</layout-row>
+					<layout-column id="ColumnLayout12"
+						class="myCustomFrame_CSK_Module_MultiRemoteCamera"
+						style="align-items: stretch">
+						<davinci-value-display id="VD_FOVX"
+							value="Field Of View [%] in X direction">
+						</davinci-value-display>
+						<layout-row id="RowLayout5" style="align-items: center">
+							<layout-column id="ColumnLayout10">
+								<davinci-text-field id="TF_FOVXstart" type="text" readonly>
+									<crown-edpws-binding property="value"
+										name="CSK_MultiRemoteCamera/OnNewFOVX" update-on-resume
+										converter="function(value) {return [value[0]].toString();}">
+									</crown-edpws-binding>
+								</davinci-text-field>
+							</layout-column>
+							<layout-column id="ColumnLayout11" style="flex-grow: 4">
+								<davinci-range-slider id="RS_FOVX"
+									class="myCustomSlider_CSK_Module_MultiRemoteCamera" min="0"
+									max="100" ticks="1" style="flex-grow: 1; width: 100%">
+									<span></span>
+									<crown-binding event="change" name="CSK_MultiRemoteCamera/setFOVX"
+										path="param/args/values" auto-commit
+										converter="function(value) {return [value[0], value[1]];}">
+									</crown-binding>
+									<crown-edpws-binding property="value"
+										name="CSK_MultiRemoteCamera/OnNewFOVX" update-on-resume>
+									</crown-edpws-binding>
+									<crown-on property="disabled"
+										crown-event="CSK_MultiRemoteCamera/OnUserLevelMaintenanceActive"
+										converter="function(value) {return !value;}">
+									</crown-on>
+								</davinci-range-slider>
+							</layout-column>
+							<layout-column id="ColumnLayout13">
+								<davinci-text-field id="TF_FOVXend" type="text" readonly>
+									<crown-edpws-binding property="value"
+										name="CSK_MultiRemoteCamera/OnNewFOVX" update-on-resume
+										converter="function(value) {return [value[1]].toString();}">
+									</crown-edpws-binding>
+								</davinci-text-field>
+							</layout-column>
+						</layout-row>
+						<davinci-value-display id="VD_FOVY"
+							value="Field Of View [%] in Y direction">
+						</davinci-value-display>
+						<layout-row id="RowLayout30" style="align-items: center">
+							<layout-column id="ColumnLayout14">
+								<davinci-text-field id="TF_FOVYstart" type="text" readonly
+									style="align-self: center; flex-grow: 1">
+									<crown-edpws-binding property="value"
+										name="CSK_MultiRemoteCamera/OnNewFOVY" update-on-resume
+										converter="function(value) {return [value[0]].toString();}">
+									</crown-edpws-binding>
+								</davinci-text-field>
+							</layout-column>
+							<layout-column id="ColumnLayout15" style="flex-grow: 4">
+								<davinci-range-slider id="RS_FOVY"
+									class="myCustomSlider_CSK_Module_MultiRemoteCamera" min="0"
+									max="100" ticks="1" style="width: 100%; flex-grow: 1">
+									<span></span>
+									<crown-binding event="change" name="CSK_MultiRemoteCamera/setFOVY"
+										path="param/args/values" auto-commit
+										converter="function(value) {return [value[0], value[1]];}">
+									</crown-binding>
+									<crown-edpws-binding property="value"
+										name="CSK_MultiRemoteCamera/OnNewFOVY" update-on-resume>
+									</crown-edpws-binding>
+									<crown-on property="disabled"
+										crown-event="CSK_MultiRemoteCamera/OnUserLevelMaintenanceActive"
+										converter="function(value) {return !value;}">
+									</crown-on>
+								</davinci-range-slider>
+							</layout-column>
+							<layout-column id="ColumnLayout39">
+								<davinci-text-field id="TF_FOVYend" type="text" readonly
+									style="align-self: center; flex-grow: 1">
+									<crown-edpws-binding property="value"
+										name="CSK_MultiRemoteCamera/OnNewFOVY" update-on-resume
+										converter="function(value) {return [value[1]].toString();}">
+									</crown-edpws-binding>
+								</davinci-text-field>
+							</layout-column>
+						</layout-row>
+						<davinci-button id="B_SetFOV" type="primary" icon-position="append">
+							<span>Set FOV</span>
+							<crown-binding event="submit" name="CSK_MultiRemoteCamera/setFOV"
+								auto-commit>
+							</crown-binding>
+							<crown-on property="disabled"
+								crown-event="CSK_MultiRemoteCamera/OnUserLevelMaintenanceActive"
+								converter="function(value) {return !value;}">
+							</crown-on>
+						</davinci-button>
+					</layout-column>
+					<stacked-view id="SV_LoginImageSaving">
+						<stacked-pane id="SP_LoginOK3" value="true">
+							<layout-row id="RowLayout13"
+								class="myCustomFrame_CSK_Module_MultiRemoteCamera"
+								style="align-items: stretch">
+								<layout-column id="ColumnLayout26" style="align-items: stretch">
+									<layout-row id="RowLayout24"
+										class="myCustomSpacerVert10_CSK_Module_MultiRemoteCamera">
+									</layout-row>
+									<layout-row id="RowLayout23" style="align-items: center">
+										<layout-column id="ColumnLayout28" style="align-items: stretch">
+											<layout-row id="RowLayout20" style="justify-content: space-between">
+												<davinci-value-display id="VD_SaveAllImages" value="Save all images">
+												</davinci-value-display>
+												<davinci-toggle-switch id="SW_SaveAllImages">
+												<crown-edpws-binding property="checked"
+													name="CSK_MultiRemoteCamera/OnNewStatusSaveAllImagesActive"
+													update-on-resume>
+												</crown-edpws-binding>
+												<crown-binding event="change"
+													name="CSK_MultiRemoteCamera/setSaveAllImages"
+													path="param/args/status" auto-commit>
+												</crown-binding>
+												</davinci-toggle-switch>
+											</layout-row>
+										</layout-column>
+										<layout-column id="ColumnLayout29" style="align-items: stretch">
+										</layout-column>
+									</layout-row>
+									<layout-row id="RowLayout25" style="align-items: center">
+										<layout-column id="ColumnLayout30"
+											style="align-items: stretch; justify-content: center">
+											<layout-row id="RowLayout18" style="justify-content: space-between">
+												<davinci-value-display id="VD_SingeSaveMode"
+													value="Single Image save mode"
+													title="This will temporarily keep the latest image to optionally save it.">
+												</davinci-value-display>
+												<davinci-toggle-switch id="TS_SingleSaveMode" tabindex="0"
+													title="This will temporarily keep the latest image to optionally save it.">
+												<crown-edpws-binding property="checked"
+													name="CSK_MultiRemoteCamera/OnNewStatusTempImageActive"
+													update-on-resume>
+												</crown-edpws-binding>
+												<crown-binding event="change"
+													name="CSK_MultiRemoteCamera/setTempImageActive"
+													path="param/args/status" auto-commit>
+												</crown-binding>
+												</davinci-toggle-switch>
+											</layout-row>
+										</layout-column>
+										<layout-column id="ColumnLayout31"
+											style="align-items: stretch; justify-content: center">
+											<davinci-button id="B_SaveLastImage" type="primary"
+												icon-position="append">
+												<span>Save Last Image</span>
+												<crown-edpws-binding property="disabled"
+													name="CSK_MultiRemoteCamera/OnNewStatusTempImageActive"
+													update-on-resume converter="function(value) {return !value;}">
+												</crown-edpws-binding>
+												<crown-binding event="submit"
+													name="CSK_MultiRemoteCamera/triggerImageSaving" auto-commit>
+												</crown-binding>
+											</davinci-button>
+										</layout-column>
+									</layout-row>
+									<layout-row id="RowLayout26">
+										<layout-column id="ColumnLayout32"
+											style="align-items: stretch; justify-content: center">
+											<davinci-drop-down id="DD_SavingLocation"
+												title="Where to save the images">
+												<davinci-option id="Option4" value="/public/">
+												<span>PublicData</span>
+												</davinci-option>
+												<davinci-option id="Option5" value="/sdcard/0/">
+												<span>SD-Card</span>
+												</davinci-option>
+												<crown-edpws-binding property="value"
+													name="CSK_MultiRemoteCamera/OnNewSavingImagesPath"
+													update-on-resume>
+												</crown-edpws-binding>
+												<crown-binding event="change"
+													name="CSK_MultiRemoteCamera/setSavingPath" path="param/args/path"
+													auto-commit>
+												</crown-binding>
+											</davinci-drop-down>
+										</layout-column>
+										<layout-column id="ColumnLayout33"
+											style="align-items: stretch; justify-content: center">
+											<davinci-text-field id="TF_SavingFilePrefix" type="text"
+												label="File Prefix">
+												<crown-binding event="change"
+													name="CSK_MultiRemoteCamera/setImageFilePrefix"
+													path="param/args/prefix" auto-commit>
+												</crown-binding>
+												<crown-edpws-binding property="value"
+													name="CSK_MultiRemoteCamera/OnNewImageFilePrefix"
+													update-on-resume>
+												</crown-edpws-binding>
+											</davinci-text-field>
+										</layout-column>
+									</layout-row>
+									<layout-row id="RowLayout21">
+										<layout-column id="ColumnLayout3"
+											style="align-items: stretch; justify-content: center">
+											<davinci-drop-down id="DD_ImageSaveFormat">
+												<davinci-option id="Option9" value="bmp">
+												<span>bmp</span>
+												</davinci-option>
+												<davinci-option id="Option14" value="jpg">
+												<span>jpg</span>
+												</davinci-option>
+												<davinci-option id="Option10" value="png">
+												<span>png</span>
+												</davinci-option>
+												<crown-edpws-binding property="value"
+													name="CSK_MultiRemoteCamera/OnNewImageSaveFormat"
+													update-on-resume>
+												</crown-edpws-binding>
+												<crown-binding event="change"
+													name="CSK_MultiRemoteCamera/setImageSaveFormat"
+													path="param/args/format" auto-commit>
+												</crown-binding>
+											</davinci-drop-down>
+										</layout-column>
+										<layout-column id="ColumnLayout24"
+											style="align-items: stretch; justify-content: center">
+											<stacked-view id="SV_Compression">
+												<stacked-pane id="SP_jpg" value="jpg">
+												<layout-column id="ColumnLayout44" style="align-items: stretch">
+												<davinci-numeric-field id="NF_JpgCompression" type="outline" min="0"
+													max="100" ticks="1" group-separator="," decimal-separator="."
+													format-pattern="0" value="0" unit="compression rate">
+												<crown-edpws-binding property="value"
+													name="CSK_MultiRemoteCamera/OnNewFormatCompression"
+													update-on-resume>
+												</crown-edpws-binding>
+												<crown-binding event="change"
+													name="CSK_MultiRemoteCamera/setImageSaveFormatCompression"
+													path="param/args/comp" auto-commit>
+												</crown-binding>
+												</davinci-numeric-field>
+												</layout-column>
+												</stacked-pane>
+												<stacked-pane id="SP_png" value="png">
+												<layout-column id="ColumnLayout45" style="align-items: stretch">
+												<davinci-numeric-field id="NF_PngCompression" type="outline" min="0"
+													max="9" ticks="1" group-separator="," decimal-separator="."
+													format-pattern="0" value="0" unit="compression rate">
+												<crown-edpws-binding property="value"
+													name="CSK_MultiRemoteCamera/OnNewFormatCompression"
+													update-on-resume>
+												</crown-edpws-binding>
+												<crown-binding event="change"
+													name="CSK_MultiRemoteCamera/setImageSaveFormatCompression"
+													path="param/args/comp" auto-commit>
+												</crown-binding>
+												</davinci-numeric-field>
+												</layout-column>
+												</stacked-pane>
+												<stacked-pane id="SP_bmp" value="bmp"></stacked-pane>
+												<crown-edpws-binding property="value"
+													name="CSK_MultiRemoteCamera/OnNewImageSaveFormat"
+													update-on-resume>
+												</crown-edpws-binding>
+											</stacked-view>
+										</layout-column>
+									</layout-row>
+								</layout-column>
+							</layout-row>
+						</stacked-pane>
+						<crown-on property="value"
+							crown-event="CSK_MultiRemoteCamera/OnUserLevelOperatorActive"
+							converter="function(value) {return value.toString();}">
+						</crown-on>
+						<stacked-pane id="SP_LoginNotOK3" value="false"></stacked-pane>
+					</stacked-view>
+					<stacked-view id="SV_LoginPersistentData">
+						<stacked-pane id="SP_LoginOK4" value="true">
+							<layout-row id="RowLayout10"
+								class="myCustomFrame_CSK_Module_MultiRemoteCamera"
+								style="align-items: stretch">
+								<layout-column id="ColumnLayout19" style="align-items: stretch">
+									<layout-row id="RowLayout3" style="align-items: center">
+										<layout-column id="ColumnLayout7"
+											style="justify-content: center; align-items: stretch">
+											<davinci-value-display id="VD_ParameterName" value="Parameter Name:"
+												title="Name of the parameters within the CSK_PersistentData module to be uses for this module.">
+											</davinci-value-display>
+										</layout-column>
+										<layout-column id="ColumnLayout20"
+											style="flex-grow: 2; align-items: stretch">
+											<davinci-text-field id="TF_ParameterName" type="text"
+												title="Name of the parameters within the CSK_PersistentData module to be uses for this module.">
+												<crown-edpws-binding property="value"
+													name="CSK_MultiRemoteCamera/OnNewParameterName" update-on-resume>
+												</crown-edpws-binding>
+												<crown-binding event="change"
+													name="CSK_MultiRemoteCamera/setParameterName"
+													path="param/args/name" auto-commit>
+												</crown-binding>
+												<crown-edpws-binding property="disabled"
+													name="CSK_MultiRemoteCamera/OnPersistentDataModuleAvailable"
+													update-on-resume converter="function(value) {return !value;}">
+												</crown-edpws-binding>
+											</davinci-text-field>
+										</layout-column>
+									</layout-row>
+									<layout-row id="RowLayout12" style="align-items: center">
+										<layout-column id="ColumnLayout21"
+											style="justify-content: center; align-items: stretch">
+											<davinci-checkbox id="CB_LoadConfig"
+												title="Load configured parameters from CSK_PersistentData on app start.">
+												<span>Load on reboot</span>
+												<crown-edpws-binding property="checked"
+													name="CSK_MultiRemoteCamera/OnNewStatusLoadParameterOnReboot"
+													update-on-resume>
+												</crown-edpws-binding>
+												<crown-binding event="change"
+													name="CSK_MultiRemoteCamera/setLoadOnReboot"
+													path="param/args/status" auto-commit>
+												</crown-binding>
+												<crown-edpws-binding property="disabled"
+													name="CSK_MultiRemoteCamera/OnPersistentDataModuleAvailable"
+													update-on-resume converter="function(value) {return !value;}">
+												</crown-edpws-binding>
+											</davinci-checkbox>
+										</layout-column>
+										<layout-column id="ColumnLayout18"
+											style="align-items: stretch; justify-content: flex-end">
+											<davinci-button id="B_LoadConfig" type="primary"
+												icon-position="append"
+												title="Load configured parameters from CSK_PersistentData module.">
+												<span>Load Config</span>
+												<crown-set event="submit"
+													crown-function="CSK_MultiRemoteCamera/loadParameters"
+													protocol="crownMSGPACK">
+												</crown-set>
+												<crown-edpws-binding property="disabled"
+													name="CSK_MultiRemoteCamera/OnPersistentDataModuleAvailable"
+													update-on-resume converter="function(value) {return !value;}">
+												</crown-edpws-binding>
+											</davinci-button>
+										</layout-column>
+										<layout-column id="ColumnLayout6"
+											style="align-items: stretch; justify-content: flex-end">
+											<davinci-button id="B_SaveConfig" type="primary"
+												icon-position="append"
+												title="Save current configured parameters of this module within CSK_PersistentData module.">
+												<span>Save Config</span>
+												<crown-binding event="submit"
+													name="CSK_MultiRemoteCamera/sendParameters" auto-commit>
+												</crown-binding>
+												<crown-edpws-binding property="disabled"
+													name="CSK_MultiRemoteCamera/OnPersistentDataModuleAvailable"
+													update-on-resume converter="function(value) {return !value;}">
+												</crown-edpws-binding>
+											</davinci-button>
+										</layout-column>
+									</layout-row>
+								</layout-column>
+							</layout-row>
+						</stacked-pane>
+						<stacked-pane id="SP_LoginNotOK4" value="false"></stacked-pane>
+						<crown-on property="value"
+							crown-event="CSK_MultiRemoteCamera/OnUserLevelMaintenanceActive"
+							converter="function(value) {return value.toString();}">
+						</crown-on>
+					</stacked-view>
+					<davinci-text-field id="TF_LastLogMessage" type="text"
+						label="Last log message:" readonly>
+						<crown-edpws-binding property="value"
+							name="CSK_MultiRemoteCamera/OnNewLoggingMessage" update-on-resume>
+						</crown-edpws-binding>
+					</davinci-text-field>
+					<stacked-view id="SV_PageCalled">
+						<crown-binding property="value"
+							name="CSK_MultiRemoteCamera/pageCalled"
+							path="result/data/emptyString" auto-update="0" update-on-resume>
+						</crown-binding>
+						<crown-edpws-binding property="value"
+							name="CSK_MultiRemoteCamera/OnNewViewerId" update-on-resume
+							converter="changeID">
+						</crown-edpws-binding>
+					</stacked-view>
+				</layout-column>
+			</davinci-tab>
+			<davinci-tab id="T_Instances" label="Instances">
+				<layout-column id="ColumnLayout46" style="align-items: stretch">
+					<layout-row id="RowLayout7"
+						style="align-items: center; justify-content: space-between">
+						<layout-column id="ColumnLayout42" style="align-items: stretch">
+							<davinci-value-display id="VD_NumberOfInstances"
+								value="Number of cameras:">
+							</davinci-value-display>
+						</layout-column>
+						<layout-column id="ColumnLayout43" style="align-items: stretch">
+							<davinci-text-field id="TF_NumberOfInstances" type="text" readonly
+								disabled>
+								<crown-on property="value"
+									crown-event="CSK_MultiRemoteCamera/OnNewNumberOfCameras">
+								</crown-on>
+							</davinci-text-field>
+						</layout-column>
+					</layout-row>
+					<layout-column id="ColumnLayout5" style="align-items: stretch">
+						<davinci-button id="B_AddInstance" type="primary"
+							icon-position="append">
+							<span>Add camera instance</span>
+							<crown-binding event="submit" name="CSK_MultiRemoteCamera/addInstance"
+								auto-commit>
+							</crown-binding>
+							<crown-on property="disabled"
+								crown-event="CSK_MultiRemoteCamera/OnUserLevelMaintenanceActive"
+								converter="function(value) {return !value;}">
+							</crown-on>
+						</davinci-button>
+						<davinci-button id="B_RestartCameras" type="primary"
+							icon-position="append">
+							<span>Restart all cameras</span>
+							<crown-binding event="submit"
+								name="CSK_MultiRemoteCamera/restartAllCameras" auto-commit>
+							</crown-binding>
+							<crown-on property="disabled"
+								crown-event="CSK_MultiRemoteCamera/OnUserLevelOperatorActive"
+								converter="function(value) {return !value;}">
+							</crown-on>
+						</davinci-button>
+					</layout-column>
+				</layout-column>
+			</davinci-tab>
+		</davinci-tabs>
+	</layout-column>
+</layout-row>

@@ -1,0 +1,53 @@
+{
+  "version": "1.0", 
+  "pages": [
+    {
+      "category": "CameraSetup Template",
+      "pages": [
+        {
+          "path": "CSK_Application_CameraSetup/CSK_Application_CameraSetupTemplate.html",
+          "name": "CSK Application"
+        }
+      ]
+    },
+    {
+      "category": "CSK Modules",
+      "pages": [
+        {
+          "path": "CSK_Module_Logger/CSK_Module_Logger.html",
+          "name": "Logs"
+        },
+
+        {
+          "path": "CSK_Module_PowerManager/CSK_Module_PowerManager.html",
+          "name": "Power"
+        },
+
+        {
+          "path": "CSK_Module_DeviceScanner/CSK_Module_DeviceScanner.html",
+          "name": "Device Scanner"
+        },
+
+        {
+          "path": "CSK_Module_MultiRemoteCamera/CSK_Module_MultiRemoteCamera.html",
+          "name": "Camera"
+        },
+
+        {
+          "path": "CSK_Module_PersistentData/CSK_Module_PersistentData.html",
+          "name": "Persistent Data"
+        }
+      ]
+    },
+
+    {
+      "category": "Extended Features",
+      "pages": [
+        {
+          "path": "CSK_Module_MultiRemoteCamera/CSK_Module_MultiRemoteCamera_GigEVisionParameters.html",
+          "name": "Camera GigE Vision"
+        }
+      ]
+    }
+  ]
+}

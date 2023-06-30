@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Device xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\..\..\..\Docu\Parameter.cid.xsd">
+  <UserLevel/>
+  <IFD>
+    <CID>
+      <Block Name="CSK_Module_PersistentData">
+        <Group Description="Parameters to store persistently." Name="PersistentData">
+          <Variable Description="Path to the persistend data file (which can include all relevant parameter sets for used modules)" Name="DataFilePath" VirtualMemoryRef="ApplicationParameters">
+            <BasicType>
+              <String FixedLength="False" Length="500" DefaultValue="/public/CSK_PersistentData.bin"/>
+            </BasicType>
+          </Variable>
+          <Variable Description="Amount of instances [DEPRECATED]" Name="InstanceAmount" VirtualMemoryRef="ApplicationParameters">
+            <BasicType>
+              <USInt DefaultValue="1"/>
+            </BasicType>
+          </Variable>
+        </Group>
+      </Block>
+    </CID>
+  </IFD>
+  <Hardware>
+    <VirtualMemory Name="ApplicationParameters"/>
+  </Hardware>
+</Device>

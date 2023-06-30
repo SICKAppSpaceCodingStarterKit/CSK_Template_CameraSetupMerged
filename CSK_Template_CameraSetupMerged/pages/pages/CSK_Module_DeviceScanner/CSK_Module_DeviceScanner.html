@@ -1,0 +1,241 @@
+<layout-row id="RowLayout1"
+	style="justify-content: space-between; flex-shrink: 0">
+	<stacked-view id="SV_Login" style="flex-grow: 1">
+		<stacked-pane id="SP_LoggedIn" value="true" style="flex-grow: 1">
+			<layout-row id="RowLayout8"
+				style="justify-content: space-between; flex-shrink: 0">
+				<layout-column id="ColumnLayout2"
+					style="align-items: stretch; flex-shrink: 0">
+					<stacked-view id="SV_Callouts">
+						<stacked-pane id="SP_Processing" value="processing">
+							<davinci-callout id="Callout2" type="info">
+								<span>... Currently processing...</span>
+							</davinci-callout>
+						</stacked-pane>
+						<stacked-pane id="SP_Success" value="success">
+							<davinci-callout id="Callout7" type="success">
+								<span>
+									New config accepted! Trigger rescan to update the list.
+								</span>
+							</davinci-callout>
+						</stacked-pane>
+						<stacked-pane id="SP_Error" value="error">
+							<davinci-callout id="Callout8" type="error">
+								<span>
+									New config NOT accepted (maybe just temporarly active)! Trigger rescan to update the list.
+								</span>
+							</davinci-callout>
+						</stacked-pane>
+						<stacked-pane id="SP_Empty" value="empty"></stacked-pane>
+						<crown-edpws-binding property="value"
+							name="CSK_DeviceScanner/OnNewScanStatus" update-on-resume>
+						</crown-edpws-binding>
+					</stacked-view>
+					<davinci-drop-down id="DD_Interface" label="Selected Interface">
+						<crown-edpws-binding property="data"
+							name="CSK_DeviceScanner/OnNewInterfaceList" update-on-resume
+							converter="convertToList">
+						</crown-edpws-binding>
+						<crown-edpws-binding property="value"
+							name="CSK_DeviceScanner/OnNewInterfaceSelected" update-on-resume>
+						</crown-edpws-binding>
+						<crown-binding event="change" name="CSK_DeviceScanner/selectInterface"
+							path="param/args/selection" auto-commit>
+						</crown-binding>
+					</davinci-drop-down>
+					<davinci-button id="B_Scan" type="primary" icon-position="append">
+						<span>Scan for Device</span>
+						<crown-binding event="submit" name="CSK_DeviceScanner/scanForDevices"
+							auto-commit>
+						</crown-binding>
+					</davinci-button>
+					<layout-row id="RowLayout2" style="width: 100%; align-items: stretch">
+						<curie-table id="DT_FoundDevices" selectable
+							select-mode="highlight_row" style="height: 100%; width: 100%">
+							<curie-table-column id="DeviceNo" header="DeviceNo">
+							</curie-table-column>
+							<curie-table-column id="DeviceName" header="DeviceName">
+							</curie-table-column>
+							<curie-table-column id="Interface" header="Interface">
+							</curie-table-column>
+							<curie-table-column id="IP" header="IP"></curie-table-column>
+							<curie-table-column id="SubnetMask" header="SubnetMask">
+							</curie-table-column>
+							<curie-table-column id="MAC" header="MAC"></curie-table-column>
+							<curie-table-column id="DefaultGateway" header="DefaultGateway">
+							</curie-table-column>
+							<curie-table-column id="DHCP" header="DHCP">
+							</curie-table-column>
+							<crown-edpws-binding property="data"
+								name="CSK_DeviceScanner/OnNewDeviceTable" update-on-resume>
+							</crown-edpws-binding>
+							<crown-binding event="row-selected"
+								name="CSK_DeviceScanner/selectDevice" path="param/args/selection"
+								auto-commit>
+							</crown-binding>
+						</curie-table>
+					</layout-row>
+					<layout-row id="Placeholder"
+						class="myCustomSpace10px_CSK_Module_DeviceScanner">
+					</layout-row>
+					<layout-row id="RowLayout7"
+						style="justify-content: space-between; align-items: center">
+						<layout-column id="ColumnLayout3" style="align-items: stretch">
+							<layout-row id="RowLayout3" style="align-items: center">
+								<davinci-value-display id="VD_IP" label="IP" title="Preset IP">
+								</davinci-value-display>
+								<davinci-text-field id="TF_IP" type="text" title="Preset IP">
+									<crown-edpws-binding property="value" name="CSK_DeviceScanner/OnNewIP"
+										update-on-resume>
+									</crown-edpws-binding>
+									<crown-binding event="change" name="CSK_DeviceScanner/setDeviceIP"
+										path="param/args/ip" auto-commit>
+									</crown-binding>
+									<crown-on property="disabled"
+										crown-event="CSK_DeviceScanner/OnUserLevelMaintenanceActive"
+										converter="function(value) {return !value;}">
+									</crown-on>
+								</davinci-text-field>
+							</layout-row>
+						</layout-column>
+						<layout-column id="ColumnLayout1" style="align-items: stretch">
+							<layout-row id="RowLayout4" style="align-items: center">
+								<davinci-value-display id="VD_Subnet" label="Subnet"
+									title="Preset subnet">
+								</davinci-value-display>
+								<davinci-text-field id="TF_Subnet" type="text" title="Preset subnet">
+									<crown-edpws-binding property="value"
+										name="CSK_DeviceScanner/OnNewSubnetMask" update-on-resume>
+									</crown-edpws-binding>
+									<crown-binding event="change" name="CSK_DeviceScanner/setSubnetMask"
+										path="param/args/subnetMask" auto-commit>
+									</crown-binding>
+									<crown-on property="disabled"
+										crown-event="CSK_DeviceScanner/OnUserLevelMaintenanceActive"
+										converter="function(value) {return !value;}">
+									</crown-on>
+								</davinci-text-field>
+							</layout-row>
+						</layout-column>
+						<layout-column id="ColumnLayout4" style="align-items: stretch">
+							<layout-row id="RowLayout5" style="align-items: center">
+								<davinci-value-display id="VD_GateWay" label="Gateway"
+									title="Preset Gateway">
+								</davinci-value-display>
+								<davinci-text-field id="TF_Gateway" type="text"
+									title="Preset Gateway">
+									<crown-edpws-binding property="value"
+										name="CSK_DeviceScanner/OnNewGateway" update-on-resume>
+									</crown-edpws-binding>
+									<crown-binding event="change" name="CSK_DeviceScanner/setGateway"
+										path="param/args/gateway" auto-commit>
+									</crown-binding>
+									<crown-on property="disabled"
+										crown-event="CSK_DeviceScanner/OnUserLevelMaintenanceActive"
+										converter="function(value) {return !value;}">
+									</crown-on>
+								</davinci-text-field>
+							</layout-row>
+						</layout-column>
+						<layout-column id="ColumnLayout5" style="align-items: stretch">
+							<layout-row id="RowLayout6" style="align-items: center">
+								<davinci-value-display id="VD_DHCP" label="DHCP" title="Preset DHCP">
+								</davinci-value-display>
+								<davinci-checkbox id="CB_DHCP" title="Preset DHCP">
+									<span></span>
+									<crown-edpws-binding property="checked"
+										name="CSK_DeviceScanner/OnNewDHCPStatus" update-on-resume>
+									</crown-edpws-binding>
+									<crown-binding event="change" name="CSK_DeviceScanner/setDHCP"
+										path="param/args/status" auto-commit>
+									</crown-binding>
+									<crown-on property="disabled"
+										crown-event="CSK_DeviceScanner/OnUserLevelMaintenanceActive"
+										converter="function(value) {return !value;}">
+									</crown-on>
+								</davinci-checkbox>
+							</layout-row>
+						</layout-column>
+					</layout-row>
+					<davinci-button id="B_SendConfig" type="primary"
+						icon-position="append" title="Send new config to device">
+						<span>Send new config</span>
+						<crown-binding event="submit" name="CSK_DeviceScanner/sendNewConfig"
+							auto-commit>
+						</crown-binding>
+						<crown-edpws-binding property="disabled"
+							name="CSK_DeviceScanner/OnDeviceSelected" update-on-resume
+							converter="function(value) {return !value;}">
+						</crown-edpws-binding>
+					</davinci-button>
+					<stacked-view id="SV_InfoTexts">
+						<stacked-pane id="StackedPane7" value="true">
+							<layout-column id="ColumnLayout6"
+								style="align-items: stretch; flex-shrink: 0">
+								<davinci-callout id="Callout3" type="info">
+									<span>
+										INFO: There can be following limitations related to the feature scope of the device firmware (please update to latest firmware version):
+									</span>
+								</davinci-callout>
+								<davinci-callout id="Callout6" type="warning">
+									<span>
+										1) Devices with identical IP address as one of the ETH interfaces of the device may not be detected. If so, check ALL ETH interfaces and modify relevant SIM-IP addresses (temporarily) in order to detect such connected devices and to edit their IP-address. This is quite common with factory setup of new devices (e.g. cameras with IP 192.168.0.1)
+									</span>
+								</davinci-callout>
+								<davinci-callout id="Callout5" type="warning">
+									<span>
+										2) Setting IP config of GigE Vision cameras may only be possible TO or FROM same subnet. E.g. if connected SIM interface has IP 192.168.0.x / 255.255.255.0 you can set new config for cameras with IP 192.168.0.x to other addresses OR from another setting to this address range. If you want to change FROM another subnet TO another subnet, you need to do this by using this twice (first set to same subnet and after that change to desired address...)
+									</span>
+								</davinci-callout>
+								<davinci-callout id="Callout4" type="warning">
+									<span>
+										3) Editing GigE Vision cameras with an current IP in a different subnet than the interface of the SIM may not be possible with SIM1012 firmware <2.2.0.
+									</span>
+								</davinci-callout>
+								<davinci-callout id="Callout9" type="warning">
+									<span>
+										4) After setting new GigE Vision camera IP with SIM1012 a power cycle of the camera may be required to activate the new setting!
+									</span>
+								</davinci-callout>
+							</layout-column>
+						</stacked-pane>
+						<crown-on property="value"
+							crown-event="CSK_DeviceScanner/OnUserLevelMaintenanceActive"
+							converter="function(value) {return value.toString();}">
+						</crown-on>
+					</stacked-view>
+					<stacked-view id="SV_ErrorMessage">
+						<stacked-pane id="SP_true" value="true">
+							<davinci-callout id="Callout1" type="error">
+								<span>Please check your setting!</span>
+							</davinci-callout>
+						</stacked-pane>
+						<stacked-pane id="SP_false" value="false"></stacked-pane>
+						<crown-edpws-binding property="value"
+							name="CSK_DeviceScanner/OnNewErrorActive" update-on-resume
+							converter="function(value) {return value.toString();}">
+						</crown-edpws-binding>
+					</stacked-view>
+					<stacked-view id="SV_pageCalled">
+						<crown-binding property="value" name="CSK_DeviceScanner/pageCalled"
+							path="result/data/empty" auto-update="0" update-on-resume>
+						</crown-binding>
+					</stacked-view>
+				</layout-column>
+			</layout-row>
+		</stacked-pane>
+		<stacked-pane id="SP_NotLoggedIn" value="false">
+			<layout-column id="ColumnLayout7" style="align-items: stretch">
+				<davinci-callout id="Callout10" type="info">
+					<span>
+						Please login with minimum user level Operator to see this page.
+					</span>
+				</davinci-callout>
+			</layout-column>
+		</stacked-pane>
+		<crown-on property="value"
+			crown-event="CSK_DeviceScanner/OnUserLevelOperatorActive"
+			converter="function(value) {return value.toString();}">
+		</crown-on>
+	</stacked-view>
+</layout-row>

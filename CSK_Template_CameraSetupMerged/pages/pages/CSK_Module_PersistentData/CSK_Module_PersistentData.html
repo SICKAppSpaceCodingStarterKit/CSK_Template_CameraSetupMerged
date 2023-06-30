@@ -1,0 +1,138 @@
+<layout-row id="RowLayout1">
+	<layout-column id="ColumnLayout5" style="align-items: stretch">
+		<stacked-view id="SV_Login">
+			<stacked-pane id="SP_LoggedIn" value="true">
+				<layout-row id="RowLayout2" style="justify-content: space-between">
+					<layout-column id="ColumnLayout1" style="align-items: stretch">
+						<stacked-view id="SV_Feedback">
+							<stacked-pane id="SP_Empty" value="EMPTY"></stacked-pane>
+							<stacked-pane id="SP_OK" value="OK">
+								<davinci-callout id="CO_Ok" type="info">
+									<span>Worked</span>
+								</davinci-callout>
+							</stacked-pane>
+							<stacked-pane id="SP_Err" value="ERR">
+								<davinci-callout id="CO_Error" type="warning">
+									<span>Error</span>
+								</davinci-callout>
+							</stacked-pane>
+							<crown-edpws-binding property="value"
+								name="CSK_PersistentData/OnNewFeedbackStatus" update-on-resume>
+							</crown-edpws-binding>
+						</stacked-view>
+						<davinci-text-field id="TF_ParameterPath" type="text"
+							label="Set Parameter path:">
+							<crown-binding event="change" name="CSK_PersistentData/setPath"
+								path="param/args/path" auto-commit>
+							</crown-binding>
+							<crown-edpws-binding property="value"
+								name="CSK_PersistentData/OnNewDataPath" update-on-resume>
+							</crown-edpws-binding>
+						</davinci-text-field>
+						<davinci-text-area id="TA_ContentList" multiline readonly
+							label="Content list:">
+							<crown-edpws-binding property="value"
+								name="CSK_PersistentData/OnNewContent" update-on-resume>
+							</crown-edpws-binding>
+						</davinci-text-area>
+						<davinci-button id="B_LoadData" type="primary" icon-position="append">
+							<span>Load Data</span>
+							<crown-binding event="submit" name="CSK_PersistentData/loadContent"
+								auto-commit>
+							</crown-binding>
+						</davinci-button>
+						<davinci-button id="B_SaveData" type="primary" icon-position="append">
+							<span>Save Persistend Data</span>
+							<crown-binding event="submit" name="CSK_PersistentData/saveData"
+								auto-commit>
+							</crown-binding>
+						</davinci-button>
+						<appspace-file-download-button id="FDB_DownloadData" type="primary"
+							icon-position="append"
+							downloaded-filename="CSK_PersistentData.bin">
+							<span>Download Persistent Data</span>
+							<crown-on property="file-path"
+								crown-event="CSK_PersistentData/OnNewDataPath">
+							</crown-on>
+						</appspace-file-download-button>
+						<appspace-file-upload-button id="FUB_UploadData" button-type="primary"
+							is-file path="/ram/CSK_PersistentData_Temp.bin"
+							title="Temporarily upload parameter dataset to optionally overwrite existing data.">
+							<span>Upload Persistent Data</span>
+							<crown-set event="finished"
+								crown-function="CSK_PersistentData/fileUploadFinished"
+								protocol="crownMSGPACK" crown-path="status">
+							</crown-set>
+						</appspace-file-upload-button>
+						<davinci-button id="B_OverwriteData" type="primary"
+							icon-position="append"
+							title="Overwrite current persistent data file with uploaded one.">
+							<span>Overwrite Persistent Data</span>
+							<crown-edpws-binding property="disabled"
+								name="CSK_PersistentData/OnNewStatusTempFileAvailable"
+								update-on-resume converter="function(value) {return !value;}">
+							</crown-edpws-binding>
+							<crown-binding event="submit" name="CSK_PersistentData/overwriteData"
+								auto-commit>
+							</crown-binding>
+						</davinci-button>
+					</layout-column>
+					<layout-column id="ColumnLayout2" style="align-items: stretch">
+						<davinci-drop-down id="DD_Parameter">
+							<crown-edpws-binding property="data"
+								name="CSK_PersistentData/OnNewDatasetList" update-on-resume
+								converter="convertToList">
+							</crown-edpws-binding>
+							<crown-binding event="change"
+								name="CSK_PersistentData/setSelectedParameterName"
+								path="param/args/selection" auto-commit>
+							</crown-binding>
+							<crown-edpws-binding property="value"
+								name="CSK_PersistentData/OnNewParameterSelection"
+								update-on-resume>
+							</crown-edpws-binding>
+						</davinci-drop-down>
+						<davinci-button id="B_RemoveDataEntry" type="primary"
+							icon-position="append">
+							<span>REMOVE</span>
+							<crown-binding event="submit"
+								name="CSK_PersistentData/removeParameterViaUI" auto-commit>
+							</crown-binding>
+						</davinci-button>
+						<curie-table id="DT_ParameterContent" selectable
+							select-mode="highlight_row">
+							<curie-table-column id="ParameterName" header="ParameterName">
+							</curie-table-column>
+							<curie-table-column id="Value" header="Value">
+							</curie-table-column>
+							<crown-edpws-binding property="data"
+								name="CSK_PersistentData/OnNewParameterTableInfo"
+								update-on-resume>
+							</crown-edpws-binding>
+						</curie-table>
+					</layout-column>
+					<layout-column id="ColumnLayout3" style="align-items: stretch">
+						<stacked-view id="SV_PageCalled">
+							<crown-binding property="value" name="CSK_PersistentData/pageCalled"
+								path="result/data/empty" auto-update="0" update-on-resume>
+							</crown-binding>
+						</stacked-view>
+					</layout-column>
+				</layout-row>
+			</stacked-pane>
+			<stacked-pane id="SP_NotLoggedIn" value="false">
+				<davinci-callout id="Callout3" type="info">
+					<span>
+						Please login via UserManagement to see parameter setup options (minimum "Maintenance"-user level).
+					</span>
+				</davinci-callout>
+			</stacked-pane>
+			<crown-edpws-binding property="value"
+				name="CSK_PersistentData/OnUserLevelMaintenanceActive"
+				update-on-resume
+				converter="function(value) {return value.toString();}">
+			</crown-edpws-binding>
+		</stacked-view>
+	</layout-column>
+  
+</layout-row>

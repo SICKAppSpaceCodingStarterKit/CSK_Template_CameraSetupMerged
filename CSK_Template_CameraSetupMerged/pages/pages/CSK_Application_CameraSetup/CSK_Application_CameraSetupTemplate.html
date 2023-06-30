@@ -1,0 +1,77 @@
+<layout-row id="RowLayout1" style="align-items: stretch">
+	<layout-column id="ColumnLayout7" style="align-items: stretch">
+		<davinci-value-display id="VD_CameraSetup"
+			label="CameraSetupTemplate">
+		</davinci-value-display>
+        <stacked-view id="SV_WaitingForSetup">
+			<stacked-pane id="SP_WaitingActive" value="true">
+				<davinci-callout id="Callout2" type="info">
+					<span>Currently waiting for camera boot up...</span>
+				</davinci-callout>
+			</stacked-pane>
+			<stacked-pane id="SP_NoWaiting" value="false"></stacked-pane>
+			<crown-edpws-binding property="value"
+				name="CSK_CameraSetupTemplate/OnNewStatusWaitingForSetup"
+				update-on-resume
+				converter="function(value) {return value.toString();}">
+			</crown-edpws-binding>
+		</stacked-view>
+		<davinci-collapse id="Collapse_DefaultSetupInfo"
+			collapsed-title="Show Info" expanded-title="Hide">
+			<davinci-callout id="Callout_DefaultSetupInfos" type="info">
+				<span>
+					Function to load default camera setup config: Camera powered on S1/S2 and connected to ETH1 / ETH2 with IPs 192.168.1.100 / 192.168.2.100
+				</span>
+			</davinci-callout>
+		</davinci-collapse>
+		<davinci-button id="Button_LoadDefaultSetup" type="primary"
+			icon-position="append">
+			<span>Load Default Setup</span>
+			<crown-binding event="submit"
+				name="CSK_CameraSetupTemplate/loadDefaultSetup" auto-commit>
+			</crown-binding>
+		</davinci-button>
+  <layout-row id="RowLayout11"
+			style="justify-content: space-between; flex-grow: 0; align-items: center">
+			<layout-column id="ColumnLayout23" style="align-items: stretch">
+				<davinci-value-display id="VD_SelecteCamera" value="Selected camera:">
+				</davinci-value-display>
+			</layout-column>
+			<layout-column id="ColumnLayout22" style="align-items: stretch">
+				<davinci-drop-down id="DD_CameraInstance">
+					<crown-binding event="change"
+						name="CSK_MultiRemoteCamera/setSelectedCam"
+						path="param/args/camNo" auto-commit
+						converter="function(value) {return Number(value);}">
+					</crown-binding>
+					<crown-edpws-binding property="value"
+						name="CSK_MultiRemoteCamera/OnNewSelectedCam" update-on-resume
+						converter="function(value) {return value.toString();}">
+					</crown-edpws-binding>
+					<crown-edpws-binding property="data"
+						name="CSK_MultiRemoteCamera/OnNewCameraList" update-on-resume
+						converter="convertToList">
+					</crown-edpws-binding>
+				</davinci-drop-down>
+			</layout-column>
+		</layout-row>
+		<layout-row id="RowLayout5" style="align-items: stretch">
+			<layout-column id="ColumnLayout8" style="align-items: stretch">
+				<sick-viewer2d id="ViewerApp" viewer-id="multiRemoteCameraViewer1"
+					protocol="auto" style="width: 100%; height: 100%">
+				</sick-viewer2d>
+			</layout-column>
+		</layout-row>
+		<stacked-view id="SV_PageCalled">
+			<crown-edpws-binding property="value"
+				name="CSK_MultiRemoteCamera/OnNewViewerId" update-on-resume
+				converter="changeIDApp">
+			</crown-edpws-binding>
+			<crown-binding property="value"
+				name="CSK_MultiRemoteCamera/pageCalled"
+				path="result/data/emptyString" auto-update="0" update-on-resume>
+			</crown-binding>
+		</stacked-view>
+	</layout-column>
+	<layout-column id="ColumnLayout3"></layout-column>
+</layout-row>
